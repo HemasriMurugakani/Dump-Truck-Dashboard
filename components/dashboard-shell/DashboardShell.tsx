@@ -9,7 +9,7 @@ import Link from "next/link";
 const navItems = [
   { href: "/dashboard", icon: Grid2x2, label: "Dashboard" },
   { href: "/dashboard/fleet", icon: Truck, label: "Truck Detail" },
-  { href: "/dashboard/analytics", icon: Waves, label: "Acoustic" },
+  { href: "/dashboard/acoustic", icon: Waves, label: "Acoustic" },
   { href: "/dashboard/analytics", icon: BarChart3, label: "Analytics" },
   { href: "/dashboard/site", icon: Star, label: "Settings" },
   { href: "/dashboard/maintenance", icon: Shield, label: "Maintenance" },
@@ -90,7 +90,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
         {[
           { href: "/dashboard", icon: Grid2x2 },
           { href: "/dashboard/fleet", icon: Truck },
-          { href: "/dashboard/analytics", icon: Waves },
+          { href: "/dashboard/acoustic", icon: Waves },
           { href: "/dashboard/site", icon: SlidersHorizontal },
           { href: "/dashboard/maintenance", icon: Shield },
         ].map((item, idx) => (

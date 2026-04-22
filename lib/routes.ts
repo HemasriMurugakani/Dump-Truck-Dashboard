@@ -13,7 +13,7 @@ export function routeForRole(role: UserRole, assignedTruckId?: string): string {
     case "MAINTENANCE_TECH":
       return "/dashboard/maintenance";
     case "ANALYST":
-      return "/dashboard/analytics";
+      return "/dashboard/acoustic";
     default:
       return "/dashboard/fleet";
   }

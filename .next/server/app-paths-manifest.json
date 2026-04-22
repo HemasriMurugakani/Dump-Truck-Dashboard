@@ -1,9 +1,7 @@
 {
   "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
+  "/dashboard/acoustic/page": "app/dashboard/acoustic/page.js",
+  "/dashboard/truck/[truckId]/page": "app/dashboard/truck/[truckId]/page.js",
   "/page": "app/page.js",
-  "/dashboard/fleet/page": "app/dashboard/fleet/page.js",
-  "/dashboard/page": "app/dashboard/page.js",
-  "/dashboard/maintenance/page": "app/dashboard/maintenance/page.js",
-  "/dashboard/global/page": "app/dashboard/global/page.js",
-  "/dashboard/truck/[truckId]/page": "app/dashboard/truck/[truckId]/page.js"
+  "/dashboard/fleet/page": "app/dashboard/fleet/page.js"
 }
