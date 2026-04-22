@@ -1,13 +1,10 @@
 import { ProtectedShell } from "@/components/dashboard-shell/ProtectedShell";
-import { RoleLanding } from "@/components/dashboard-shell/RoleLanding";
+import { AnalyticsReportingPage } from "@/components/analytics/AnalyticsReportingPage";
 
 export default function AnalyticsDashboardPage() {
   return (
-    <ProtectedShell allowedRoles={["ANALYST", "SUPER_ADMIN"]}>
-      <RoleLanding
-        title="Analytics Studio"
-        description="Signal correlation, trend decomposition, and residue prediction confidence calibration."
-      />
+    <ProtectedShell allowedRoles={["ANALYST", "SUPER_ADMIN", "SITE_MANAGER", "FLEET_OPERATOR", "MAINTENANCE_TECH", "TRUCK_OPERATOR"]}>
+      <AnalyticsReportingPage />
     </ProtectedShell>
   );
 }
