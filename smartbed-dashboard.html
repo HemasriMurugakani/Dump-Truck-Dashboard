@@ -1,0 +1,1384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmartBed Detection System</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0b0d;
+  --bg2: #111318;
+  --bg3: #181c22;
+  --card: #13161c;
+  --card2: #1a1f28;
+  --border: #252a35;
+  --border2: #2e3545;
+  --yellow: #f5c800;
+  --yellow2: #ffd832;
+  --yellow-dim: rgba(245,200,0,0.12);
+  --red: #e53935;
+  --red-dim: rgba(229,57,53,0.15);
+  --green: #00c853;
+  --green-dim: rgba(0,200,83,0.12);
+  --orange: #ff6d00;
+  --blue: #2979ff;
+  --text: #e8eaf0;
+  --text2: #8f96a8;
+  --text3: #5a6275;
+  --mono: 'Space Mono', monospace;
+  --sans: 'Barlow', sans-serif;
+  --cond: 'Barlow Condensed', sans-serif;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { font-size:14px; }
+body { background:var(--bg); color:var(--text); font-family:var(--sans); min-height:100vh; overflow-x:hidden; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width:4px; height:4px; }
+::-webkit-scrollbar-track { background:var(--bg); }
+::-webkit-scrollbar-thumb { background:var(--border2); border-radius:2px; }
+
+/* ── LAYOUT ── */
+.app { display:flex; flex-direction:column; height:100vh; }
+
+/* TOPBAR */
+.topbar {
+  display:flex; align-items:center; gap:16px;
+  padding:0 20px; height:52px;
+  background:var(--bg2); border-bottom:1px solid var(--border);
+  position:sticky; top:0; z-index:100;
+  flex-shrink:0;
+}
+.logo-mark {
+  width:32px; height:32px; background:var(--yellow);
+  border-radius:6px; display:flex; align-items:center; justify-content:center;
+  flex-shrink:0;
+}
+.logo-mark svg { width:18px; height:18px; fill:#000; }
+.logo-text { line-height:1; }
+.logo-text .name { font-family:var(--cond); font-weight:800; font-size:16px; color:var(--yellow); letter-spacing:0.5px; }
+.logo-text .sub { font-size:9px; color:var(--text3); letter-spacing:2px; text-transform:uppercase; font-family:var(--mono); }
+.site-info { padding-left:16px; margin-left:8px; border-left:1px solid var(--border); color:var(--text2); font-size:13px; font-family:var(--cond); font-weight:600; letter-spacing:0.3px; }
+.topbar-right { margin-left:auto; display:flex; align-items:center; gap:16px; }
+.online-badge { display:flex; align-items:center; gap:6px; font-size:11px; font-family:var(--mono); color:var(--green); }
+.pulse-dot { width:7px; height:7px; border-radius:50%; background:var(--green); animation:pulse 2s infinite; }
+@keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(0,200,83,0.5)} 50%{box-shadow:0 0 0 5px rgba(0,200,83,0)} }
+.notif-btn { width:32px; height:32px; border-radius:6px; background:var(--bg3); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; cursor:pointer; position:relative; transition:border-color 0.2s; }
+.notif-btn:hover { border-color:var(--yellow); }
+.notif-btn svg { width:16px; height:16px; stroke:var(--text2); }
+.notif-badge { position:absolute; top:-4px; right:-4px; width:14px; height:14px; background:var(--red); border-radius:50%; font-size:9px; display:flex; align-items:center; justify-content:center; font-family:var(--mono); border:2px solid var(--bg2); }
+
+/* STATUSBAR */
+.statusbar {
+  display:flex; align-items:center; gap:0;
+  padding:0 20px; height:40px;
+  background:var(--bg2); border-bottom:1px solid var(--border);
+  flex-shrink:0; overflow-x:auto;
+}
+.status-pill {
+  display:flex; align-items:center; gap:7px;
+  padding:0 14px; height:40px; border-right:1px solid var(--border);
+  font-size:12px; white-space:nowrap; cursor:default;
+  transition:background 0.2s;
+}
+.status-pill:hover { background:var(--bg3); }
+.status-pill .dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+.status-pill .label { color:var(--text3); font-family:var(--mono); font-size:10px; }
+.status-pill .val { color:var(--text); font-weight:600; font-family:var(--cond); font-size:13px; }
+.status-pill .val.yellow { color:var(--yellow); }
+.status-pill .val.red { color:var(--red); }
+
+/* MAIN */
+.main { display:flex; flex:1; overflow:hidden; }
+
+/* SIDEBAR */
+.sidebar {
+  width:52px; background:var(--bg2); border-right:1px solid var(--border);
+  display:flex; flex-direction:column; align-items:center; padding:12px 0; gap:4px;
+  flex-shrink:0;
+}
+.nav-btn {
+  width:40px; height:40px; border-radius:8px; display:flex; align-items:center; justify-content:center;
+  cursor:pointer; border:none; background:transparent; transition:all 0.2s; position:relative;
+}
+.nav-btn svg { width:18px; height:18px; stroke:var(--text3); transition:stroke 0.2s; }
+.nav-btn:hover svg { stroke:var(--text2); }
+.nav-btn.active { background:var(--yellow-dim); }
+.nav-btn.active svg { stroke:var(--yellow); }
+.nav-tooltip {
+  position:absolute; left:50px; background:var(--card2); border:1px solid var(--border2);
+  padding:5px 10px; border-radius:5px; font-size:11px; white-space:nowrap; color:var(--text);
+  font-family:var(--mono); pointer-events:none; opacity:0; transition:opacity 0.2s;
+  z-index:200;
+}
+.nav-btn:hover .nav-tooltip { opacity:1; }
+
+/* CONTENT */
+.content { flex:1; overflow-y:auto; padding:20px; }
+
+/* PAGES */
+.page { display:none; animation:fadeIn 0.3s ease; }
+.page.active { display:block; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+/* PAGE HEADER */
+.page-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; }
+.page-title { font-family:var(--cond); font-weight:800; font-size:22px; letter-spacing:1px; color:var(--yellow); text-transform:uppercase; }
+
+/* CARDS GRID */
+.fleet-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(340px,1fr)); gap:16px; }
+
+/* TRUCK CARD */
+.truck-card {
+  background:var(--card); border:1px solid var(--border); border-radius:10px;
+  padding:18px; cursor:pointer; transition:all 0.25s; position:relative; overflow:hidden;
+}
+.truck-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:2px;
+  background:var(--green); transition:background 0.3s;
+}
+.truck-card.alert::before { background:var(--red); animation:alertPulse 1.5s infinite; }
+@keyframes alertPulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+.truck-card:hover { border-color:var(--border2); background:var(--card2); transform:translateY(-2px); box-shadow:0 8px 32px rgba(0,0,0,0.4); }
+.truck-card-header { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:14px; }
+.truck-id { font-family:var(--cond); font-weight:800; font-size:24px; color:var(--yellow); letter-spacing:0.5px; }
+.truck-model { font-size:11px; color:var(--text3); margin-top:1px; font-family:var(--mono); }
+.status-badge {
+  padding:3px 10px; border-radius:4px; font-size:10px; font-family:var(--mono); font-weight:700;
+  letter-spacing:1px; text-transform:uppercase;
+}
+.status-badge.operational { background:var(--green-dim); color:var(--green); border:1px solid rgba(0,200,83,0.3); }
+.status-badge.carry-back { background:var(--red-dim); color:var(--red); border:1px solid rgba(229,57,53,0.3); animation:alertPulse 1.5s infinite; }
+.truck-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+.stat { }
+.stat-label { font-size:10px; color:var(--text3); font-family:var(--mono); margin-bottom:2px; }
+.stat-val { font-size:15px; font-weight:600; font-family:var(--cond); color:var(--text); }
+.stat-val.warn { color:var(--orange); }
+.bed-viz-mini { margin-top:14px; background:var(--bg3); border-radius:6px; padding:10px; }
+.bed-viz-mini-label { font-size:10px; color:var(--text3); font-family:var(--mono); margin-bottom:8px; }
+.bed-shape-mini { width:120px; height:40px; background:linear-gradient(180deg,#1e2330 0%,#252a38 100%); border-radius:4px 4px 8px 8px; position:relative; margin:0 auto; }
+.residue-dot { position:absolute; width:22px; height:22px; border-radius:50%; background:rgba(229,57,53,0.7); display:flex; align-items:center; justify-content:center; font-size:8px; color:#fff; font-family:var(--mono); }
+
+/* DETAIL VIEW */
+.detail-layout { display:grid; grid-template-columns:280px 1fr 260px; gap:16px; }
+.detail-left { display:flex; flex-direction:column; gap:14px; }
+.detail-center { display:flex; flex-direction:column; gap:14px; }
+.detail-right { display:flex; flex-direction:column; gap:14px; }
+
+.panel {
+  background:var(--card); border:1px solid var(--border); border-radius:10px; padding:16px;
+  animation:fadeIn 0.3s ease;
+}
+.panel-title { font-family:var(--cond); font-weight:700; font-size:12px; letter-spacing:2px; text-transform:uppercase; color:var(--text3); margin-bottom:12px; }
+.panel-title.yellow { color:var(--yellow); }
+
+.info-row { display:flex; justify-content:space-between; align-items:baseline; padding:5px 0; border-bottom:1px solid rgba(255,255,255,0.04); }
+.info-row:last-child { border-bottom:none; }
+.info-label { font-size:11px; color:var(--text3); font-family:var(--mono); }
+.info-val { font-size:12px; font-weight:600; font-family:var(--mono); color:var(--text); }
+.info-val.red { color:var(--red); }
+.info-val.yellow { color:var(--yellow); }
+
+.alert-banner {
+  background:var(--red-dim); border:1px solid rgba(229,57,53,0.4); border-radius:8px;
+  padding:10px 14px; font-family:var(--cond); font-weight:700; font-size:14px;
+  color:var(--red); letter-spacing:1px; text-align:center; text-transform:uppercase;
+  animation:alertPulse 1.5s infinite;
+}
+
+/* BED VISUALIZATION */
+.bed-viz-container { position:relative; }
+.bed-viz-title { font-family:var(--cond); font-weight:700; font-size:14px; letter-spacing:1.5px; color:var(--text2); text-transform:uppercase; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center; }
+.view-toggle { display:flex; gap:4px; }
+.view-btn { padding:4px 10px; border-radius:4px; font-size:10px; font-family:var(--mono); border:1px solid var(--border); background:transparent; color:var(--text3); cursor:pointer; transition:all 0.2s; }
+.view-btn.active { background:var(--yellow-dim); border-color:var(--yellow); color:var(--yellow); }
+
+.bed-3d {
+  position:relative; width:100%; aspect-ratio:16/9; max-height:340px;
+  background:var(--bg3); border-radius:8px; overflow:hidden;
+}
+.bed-svg { width:100%; height:100%; }
+
+.zone-circle {
+  position:absolute; width:72px; height:72px; border-radius:50%;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  font-family:var(--mono); font-weight:700; font-size:14px; cursor:pointer;
+  transition:all 0.3s; border:2px solid transparent;
+  transform:translate(-50%, -50%);
+}
+.zone-circle.clear { background:rgba(0,200,83,0.15); color:var(--green); border-color:rgba(0,200,83,0.3); }
+.zone-circle.warn { background:rgba(255,109,0,0.2); color:var(--orange); border-color:rgba(255,109,0,0.4); }
+.zone-circle.alert { background:rgba(229,57,53,0.25); color:var(--red); border-color:rgba(229,57,53,0.5); animation:alertPulse 1.5s infinite; }
+.zone-circle:hover { transform:translate(-50%,-50%) scale(1.1); z-index:10; }
+.zone-sub { font-size:9px; font-weight:400; opacity:0.8; margin-top:2px; }
+
+/* TIMELINE */
+.timeline-bar { background:var(--bg3); border-radius:6px; padding:12px 14px; }
+.timeline-title { font-size:10px; font-family:var(--mono); color:var(--text3); letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+.timeline-track { position:relative; height:20px; background:var(--bg); border-radius:10px; overflow:visible; }
+.timeline-fill { height:100%; border-radius:10px; background:linear-gradient(90deg,var(--yellow),#ffaa00); position:relative; transition:width 1s ease; }
+.timeline-thumb {
+  position:absolute; right:-8px; top:50%; transform:translateY(-50%);
+  width:16px; height:16px; border-radius:50%; background:var(--yellow);
+  border:2px solid var(--bg); box-shadow:0 0 8px rgba(245,200,0,0.6);
+}
+.timeline-labels { display:flex; justify-content:space-between; margin-top:4px; font-size:10px; font-family:var(--mono); color:var(--text3); }
+.timeline-status { margin-top:8px; font-size:11px; font-family:var(--mono); color:var(--yellow); letter-spacing:0.5px; }
+
+/* SENSOR TELEMETRY */
+.sensor-row { margin-bottom:12px; }
+.sensor-header { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px; }
+.sensor-name { font-size:11px; color:var(--text2); font-family:var(--mono); }
+.sensor-val { font-size:11px; font-family:var(--mono); }
+.sensor-val.ok { color:var(--green); }
+.sensor-val.warn { color:var(--red); }
+.sensor-bars { display:flex; gap:2px; height:28px; align-items:flex-end; }
+.sensor-bar { flex:1; border-radius:2px 2px 0 0; transition:height 0.5s ease; }
+.bar-green { background:var(--green); opacity:0.8; }
+.bar-yellow { background:var(--yellow); opacity:0.8; }
+.bar-red { background:var(--red); opacity:0.8; }
+.bar-blue { background:var(--blue); opacity:0.8; }
+
+/* AI LOG */
+.ai-log { font-family:var(--mono); font-size:10px; line-height:1.8; max-height:220px; overflow-y:auto; }
+.log-line { color:var(--text3); }
+.log-line .time { color:var(--text3); }
+.log-line .key { color:var(--yellow); }
+.log-line .val { color:var(--text2); }
+.log-line.important .key { color:var(--red); }
+.log-line.success .key { color:var(--green); }
+
+/* RECOMMENDED ACTION */
+.action-panel { background:linear-gradient(135deg,rgba(245,200,0,0.08),rgba(245,200,0,0.03)); border:1px solid rgba(245,200,0,0.25); border-radius:8px; padding:14px; }
+.action-title { font-family:var(--cond); font-weight:700; font-size:13px; letter-spacing:2px; color:var(--yellow); text-transform:uppercase; margin-bottom:10px; }
+.action-row { margin-bottom:8px; }
+.action-badge { display:inline-block; font-size:9px; font-family:var(--mono); padding:2px 7px; border-radius:3px; font-weight:700; margin-right:6px; }
+.action-badge.immediate { background:rgba(229,57,53,0.2); color:var(--red); }
+.action-badge.scheduled { background:rgba(245,200,0,0.15); color:var(--yellow); }
+.action-badge.note { background:rgba(255,109,0,0.15); color:var(--orange); }
+.action-text { font-size:11px; color:var(--text2); }
+
+/* ANALYTICS */
+.kpi-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin-bottom:20px; }
+.kpi-card { background:var(--card); border:1px solid var(--border); border-radius:8px; padding:14px; }
+.kpi-label { font-size:10px; color:var(--text3); font-family:var(--mono); margin-bottom:6px; }
+.kpi-val { font-family:var(--cond); font-weight:800; font-size:26px; color:var(--yellow); }
+.kpi-unit { font-size:14px; font-weight:600; color:var(--yellow); }
+.kpi-delta { font-size:10px; margin-top:3px; font-family:var(--mono); }
+.kpi-delta.pos { color:var(--green); }
+.kpi-delta.neg { color:var(--red); }
+.kpi-sparkline { height:30px; margin-top:8px; }
+
+.analytics-grid { display:grid; grid-template-columns:1fr 320px; gap:16px; margin-bottom:16px; }
+.analytics-bottom { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; }
+
+/* CHART CANVAS */
+canvas { display:block; }
+
+/* HEATMAP */
+.heatmap { }
+.heatmap-header { display:flex; gap:8px; margin-bottom:8px; align-items:center; }
+.heatmap-label { font-size:10px; font-family:var(--mono); color:var(--text3); }
+.heatmap-days { display:flex; gap:3px; flex:1; justify-content:space-around; }
+.heatmap-day-label { font-size:9px; font-family:var(--mono); color:var(--text3); text-align:center; width:24px; }
+.heatmap-row { display:flex; align-items:center; gap:8px; margin-bottom:3px; }
+.heatmap-truck-label { font-size:10px; font-family:var(--mono); color:var(--text3); width:52px; text-align:right; }
+.heatmap-cells { display:flex; gap:3px; }
+.hm-cell { width:24px; height:24px; border-radius:3px; cursor:pointer; transition:transform 0.15s; position:relative; }
+.hm-cell:hover { transform:scale(1.2); z-index:5; }
+.hm-cell.excellent { background:#1a4731; }
+.hm-cell.warning { background:#7c3d00; }
+.hm-cell.poor { background:#5c1010; }
+.hm-cell.critical { background:#8b0000; }
+.hm-legend { display:flex; gap:12px; margin-top:8px; }
+.hm-legend-item { display:flex; align-items:center; gap:5px; font-size:9px; font-family:var(--mono); color:var(--text3); }
+.hm-legend-dot { width:10px; height:10px; border-radius:2px; }
+
+/* ROI CALCULATOR */
+.roi-input { margin-bottom:10px; }
+.roi-label { font-size:10px; font-family:var(--mono); color:var(--text3); margin-bottom:4px; }
+.roi-field { width:100%; background:var(--bg3); border:1px solid var(--border); border-radius:5px; padding:7px 10px; color:var(--text); font-family:var(--mono); font-size:12px; outline:none; transition:border-color 0.2s; }
+.roi-field:focus { border-color:var(--yellow); }
+.roi-results { background:linear-gradient(135deg,rgba(245,200,0,0.08),rgba(245,200,0,0.03)); border:1px solid rgba(245,200,0,0.2); border-radius:8px; padding:14px; margin-top:12px; }
+.roi-result-row { margin-bottom:8px; }
+.roi-result-label { font-size:10px; color:var(--text3); font-family:var(--mono); }
+.roi-result-val { font-family:var(--cond); font-weight:800; font-size:22px; color:var(--yellow); }
+.export-btn { width:100%; margin-top:14px; background:var(--yellow); color:#000; border:none; padding:10px; font-family:var(--cond); font-weight:700; font-size:14px; letter-spacing:1px; text-transform:uppercase; border-radius:6px; cursor:pointer; transition:opacity 0.2s; }
+.export-btn:hover { opacity:0.85; }
+
+/* ACOUSTIC LAB */
+.acoustic-grid { display:grid; grid-template-columns:1fr 1fr 260px; gap:16px; margin-bottom:16px; }
+.acoustic-bottom { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+
+.spectrum-container { position:relative; height:220px; background:var(--bg3); border-radius:8px; overflow:hidden; }
+.spectrum-canvas { width:100%; height:100%; }
+
+.material-badge { padding:14px; border-radius:8px; text-align:center; margin-bottom:12px; }
+.material-badge.wet-clay { background:var(--red-dim); border:1px solid rgba(229,57,53,0.3); }
+.material-type { font-family:var(--cond); font-weight:800; font-size:20px; color:var(--red); letter-spacing:2px; text-transform:uppercase; }
+.material-conf { font-size:10px; font-family:var(--mono); color:var(--text3); margin-top:3px; }
+.classifier-bar { margin-bottom:8px; }
+.cls-header { display:flex; justify-content:space-between; font-size:11px; color:var(--text2); margin-bottom:4px; font-family:var(--mono); }
+.cls-track { height:6px; background:var(--bg3); border-radius:3px; overflow:hidden; }
+.cls-fill { height:100%; border-radius:3px; background:var(--yellow); transition:width 1s ease; }
+.protocol-box { background:var(--bg3); border-radius:6px; padding:10px; margin-top:10px; }
+.protocol-title { font-size:10px; font-family:var(--mono); color:var(--text3); margin-bottom:6px; letter-spacing:1px; text-transform:uppercase; }
+.protocol-line { font-size:11px; color:var(--text2); margin-bottom:3px; }
+.protocol-flag { color:var(--orange); font-size:11px; font-family:var(--mono); margin-top:4px; }
+
+/* VIBRATION TABLE */
+.vib-table { width:100%; border-collapse:collapse; }
+.vib-table th { font-size:10px; font-family:var(--mono); color:var(--text3); text-align:left; padding:6px 8px; border-bottom:1px solid var(--border); }
+.vib-table td { font-size:11px; font-family:var(--mono); padding:7px 8px; border-bottom:1px solid rgba(255,255,255,0.03); color:var(--text2); }
+.vib-table tr:hover td { background:rgba(255,255,255,0.02); }
+.cleared-badge { color:var(--green); font-size:10px; }
+
+/* MAINTENANCE */
+.maint-grid { display:grid; grid-template-columns:280px 1fr 280px; gap:16px; }
+.alert-item { padding:12px 14px; border-radius:8px; border:1px solid var(--border); background:var(--card); margin-bottom:8px; cursor:pointer; transition:all 0.2s; }
+.alert-item:hover { border-color:var(--border2); }
+.alert-item.high { border-left:3px solid var(--red); }
+.alert-item.med { border-left:3px solid var(--orange); }
+.alert-item.low { border-left:3px solid var(--yellow); }
+.alert-sev { font-size:9px; font-family:var(--mono); padding:2px 7px; border-radius:3px; margin-right:6px; }
+.alert-sev.high { background:rgba(229,57,53,0.2); color:var(--red); }
+.alert-sev.med { background:rgba(255,109,0,0.2); color:var(--orange); }
+.alert-sev.low { background:rgba(245,200,0,0.15); color:var(--yellow); }
+.alert-truck { font-family:var(--cond); font-weight:700; font-size:14px; color:var(--text); }
+.alert-desc { font-size:11px; color:var(--text2); margin:4px 0; }
+.alert-remain { font-size:11px; font-family:var(--mono); }
+.alert-remain .cycles { color:var(--red); font-weight:700; }
+.alert-action { font-size:10px; color:var(--text3); font-family:var(--mono); margin-top:4px; }
+
+/* BED WEAR MAP */
+.wear-map { position:relative; width:100%; aspect-ratio:4/3; }
+.wear-svg { width:100%; height:100%; }
+
+/* SCHEDULE */
+.sched-item { display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:6px; border:1px solid var(--border); background:var(--card); margin-bottom:6px; transition:all 0.2s; cursor:pointer; }
+.sched-item:hover { border-color:var(--border2); background:var(--card2); }
+.sched-date { width:44px; text-align:center; }
+.sched-month { font-size:9px; color:var(--text3); font-family:var(--mono); text-transform:uppercase; }
+.sched-day { font-size:18px; font-family:var(--cond); font-weight:800; color:var(--yellow); line-height:1; }
+.sched-info { flex:1; }
+.sched-truck { font-size:12px; font-family:var(--cond); font-weight:700; color:var(--text); }
+.sched-task { font-size:11px; color:var(--text3); }
+.sched-check { width:18px; height:18px; border-radius:3px; border:1px solid var(--border); background:transparent; }
+
+/* COST AVOIDANCE */
+.cost-box { background:linear-gradient(135deg,rgba(0,200,83,0.08),rgba(0,200,83,0.03)); border:1px solid rgba(0,200,83,0.2); border-radius:8px; padding:14px; }
+.cost-title { font-family:var(--cond); font-weight:700; font-size:11px; letter-spacing:2px; color:var(--green); margin-bottom:10px; text-transform:uppercase; }
+.cost-row { display:flex; justify-content:space-between; padding:4px 0; border-bottom:1px solid rgba(255,255,255,0.04); }
+.cost-label { font-size:11px; color:var(--text3); }
+.cost-val { font-size:11px; font-family:var(--mono); color:var(--green); }
+
+/* CONFIG */
+.config-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.config-section { margin-bottom:16px; }
+.config-title { font-family:var(--cond); font-weight:700; font-size:13px; letter-spacing:2px; color:var(--yellow); text-transform:uppercase; margin-bottom:12px; padding-bottom:8px; border-bottom:1px solid var(--border); }
+.config-row { margin-bottom:12px; }
+.config-label { font-size:10px; color:var(--text3); font-family:var(--mono); margin-bottom:4px; }
+.config-input { width:100%; background:var(--bg3); border:1px solid var(--border); border-radius:5px; padding:8px 10px; color:var(--text); font-family:var(--mono); font-size:12px; outline:none; transition:border-color 0.2s; }
+.config-input:focus { border-color:var(--yellow); }
+.config-input[readonly] { color:var(--text3); cursor:default; }
+.config-display { background:var(--bg3); border:1px solid var(--border); border-radius:5px; padding:8px 10px; font-family:var(--mono); font-size:12px; color:var(--text3); }
+.toggle-group { display:flex; gap:2px; }
+.toggle-opt { padding:6px 14px; background:var(--bg3); border:1px solid var(--border); font-family:var(--mono); font-size:10px; color:var(--text3); cursor:pointer; transition:all 0.2s; }
+.toggle-opt:first-child { border-radius:5px 0 0 5px; }
+.toggle-opt:last-child { border-radius:0 5px 5px 0; }
+.toggle-opt.active { background:var(--yellow); border-color:var(--yellow); color:#000; font-weight:700; }
+.switch { position:relative; width:44px; height:24px; }
+.switch input { opacity:0; width:0; height:0; }
+.switch-track { position:absolute; inset:0; background:var(--bg3); border:1px solid var(--border); border-radius:12px; cursor:pointer; transition:all 0.3s; }
+.switch input:checked + .switch-track { background:var(--yellow); border-color:var(--yellow); }
+.switch-thumb { position:absolute; top:2px; left:2px; width:18px; height:18px; background:#fff; border-radius:50%; transition:transform 0.3s; }
+.switch input:checked ~ .switch-thumb { transform:translateX(20px); }
+.calibrated-badge { display:inline-flex; align-items:center; gap:5px; background:var(--green-dim); border:1px solid rgba(0,200,83,0.3); padding:3px 10px; border-radius:4px; font-size:10px; font-family:var(--mono); color:var(--green); }
+.save-btn { width:100%; background:var(--yellow); color:#000; border:none; padding:12px; font-family:var(--cond); font-weight:700; font-size:15px; letter-spacing:2px; text-transform:uppercase; border-radius:6px; cursor:pointer; transition:all 0.2s; margin-top:16px; }
+.save-btn:hover { opacity:0.85; transform:translateY(-1px); }
+
+/* HARDWARE TOPOLOGY */
+.topo-container { background:var(--bg3); border-radius:8px; padding:20px; position:relative; min-height:300px; }
+.topo-node {
+  position:absolute; background:var(--card); border:1px solid var(--border); border-radius:6px;
+  padding:8px 12px; font-family:var(--mono); text-align:center; transition:all 0.2s; cursor:default;
+}
+.topo-node:hover { border-color:var(--yellow); }
+.topo-node.highlight { border-color:var(--yellow); background:var(--yellow-dim); }
+.topo-node .node-name { font-size:11px; color:var(--text); font-weight:700; }
+.topo-node .node-sub { font-size:9px; color:var(--text3); margin-top:2px; }
+.topo-svg { position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; }
+
+/* SYSTEM METRICS TABLE */
+.sys-table { width:100%; border-collapse:collapse; }
+.sys-table th { font-size:10px; font-family:var(--mono); color:var(--text3); text-align:left; padding:7px 10px; border-bottom:1px solid var(--border); }
+.sys-table td { font-size:11px; font-family:var(--mono); padding:8px 10px; border-bottom:1px solid rgba(255,255,255,0.03); color:var(--text2); }
+.sys-ok { color:var(--green); }
+.edge-ai-box { background:var(--bg3); border-radius:6px; padding:12px 14px; display:flex; gap:20px; flex-wrap:wrap; }
+.edge-ai-item { }
+.edge-ai-label { font-size:9px; color:var(--text3); font-family:var(--mono); }
+.edge-ai-val { font-size:12px; font-family:var(--mono); color:var(--text); font-weight:700; }
+.edge-ai-val.good { color:var(--green); }
+.edge-ai-val.warn { color:var(--orange); }
+
+/* ALERTS SUMMARY */
+.alerts-table { width:100%; border-collapse:collapse; }
+.alerts-table th { font-size:10px; font-family:var(--mono); color:var(--text3); text-align:left; padding:7px 8px; border-bottom:1px solid var(--border); }
+.alerts-table td { font-size:11px; font-family:var(--mono); padding:8px 8px; border-bottom:1px solid rgba(255,255,255,0.03); color:var(--text2); }
+.alerts-table tr:hover td { background:rgba(255,255,255,0.02); }
+.sev-badge { padding:2px 7px; border-radius:3px; font-size:9px; font-weight:700; }
+.sev-badge.high { background:rgba(229,57,53,0.2); color:var(--red); }
+.sev-badge.med { background:rgba(255,109,0,0.2); color:var(--orange); }
+.sev-badge.low { background:rgba(245,200,0,0.15); color:var(--yellow); }
+.res-badge { color:var(--green); font-size:10px; }
+.resolution-rate { background:var(--green-dim); border:1px solid rgba(0,200,83,0.3); border-radius:6px; padding:12px; text-align:center; margin-top:12px; }
+.res-rate-val { font-family:var(--cond); font-weight:800; font-size:22px; color:var(--green); }
+.res-rate-label { font-size:10px; color:var(--text3); font-family:var(--mono); }
+
+/* CYCLE HISTORY */
+.cycle-chart-container { height:80px; background:var(--bg3); border-radius:6px; padding:8px; }
+
+/* RESPONSIVE */
+@media (max-width:1200px) {
+  .detail-layout { grid-template-columns:1fr; }
+  .kpi-grid { grid-template-columns:repeat(3,1fr); }
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="logo-mark">
+    <svg viewBox="0 0 24 24"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/></svg>
+  </div>
+  <div class="logo-text">
+    <div class="name">SmartBed</div>
+    <div class="sub">Detection System</div>
+  </div>
+  <div class="site-info">Mine Site Alpha &bull; Eastern Operations</div>
+  <div class="topbar-right">
+    <div class="online-badge"><span class="pulse-dot"></span>ONLINE</div>
+    <div class="notif-btn" onclick="showAlert()">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke-width="2" stroke-linecap="round"/><path d="M13.73 21a2 2 0 0 1-3.46 0" stroke-width="2" stroke-linecap="round"/></svg>
+      <div class="notif-badge">1</div>
+    </div>
+  </div>
+</header>
+
+<!-- STATUSBAR -->
+<div class="statusbar">
+  <div class="status-pill"><span class="dot" style="background:var(--green)"></span><span class="label">Active Trucks</span><span class="val">8/8</span></div>
+  <div class="status-pill"><span class="dot" style="background:var(--red)"></span><span class="label">Alerts</span><span class="val red">1</span></div>
+  <div class="status-pill"><span class="dot" style="background:var(--blue)"></span><span class="label">Fleet Payload Today</span><span class="val yellow">1,847 t</span></div>
+  <div class="status-pill"><span class="dot" style="background:var(--yellow)"></span><span class="label">Shift</span><span class="val">2 of 3</span></div>
+  <div class="status-pill"><span class="label">Operator</span><span class="val">J. Ramesh</span></div>
+  <div class="status-pill"><span class="label">Wind</span><span class="val">12 km/h NE</span></div>
+  <div class="status-pill"><span class="label">Temp</span><span class="val">31°C</span></div>
+  <div class="status-pill"><span class="label">Dust Index</span><span class="val yellow">MODERATE</span></div>
+</div>
+
+<div class="main">
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <button class="nav-btn active" data-page="fleet" onclick="showPage('fleet',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><rect x="2" y="3" width="9" height="9"/><rect x="13" y="3" width="9" height="9"/><rect x="2" y="14" width="9" height="9"/><rect x="13" y="14" width="9" height="9"/></svg>
+    <div class="nav-tooltip">Fleet Overview</div>
+  </button>
+  <button class="nav-btn" data-page="detail" onclick="showPage('detail',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+    <div class="nav-tooltip">Truck Detail</div>
+  </button>
+  <button class="nav-btn" data-page="acoustic" onclick="showPage('acoustic',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+    <div class="nav-tooltip">Acoustic Lab</div>
+  </button>
+  <button class="nav-btn" data-page="analytics" onclick="showPage('analytics',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+    <div class="nav-tooltip">Analytics</div>
+  </button>
+  <button class="nav-btn" data-page="maintenance" onclick="showPage('maintenance',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    <div class="nav-tooltip">Predictive Maintenance</div>
+  </button>
+  <button class="nav-btn" data-page="config" onclick="showPage('config',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    <div class="nav-tooltip">System Config</div>
+  </button>
+</nav>
+
+<div class="content">
+
+<!-- FLEET PAGE -->
+<div class="page active" id="page-fleet">
+  <div class="fleet-grid" id="fleet-grid"></div>
+</div>
+
+<!-- DETAIL PAGE -->
+<div class="page" id="page-detail">
+  <div class="page-header">
+    <div>
+      <div class="page-title">CAT 793-11</div>
+      <div style="font-size:12px;color:var(--text3);font-family:var(--mono);margin-top:2px;">Caterpillar 793F | 240t payload class | CAT C175-16 | 2,610 HP</div>
+    </div>
+  </div>
+  <div class="detail-layout">
+    <div class="detail-left">
+      <div class="panel">
+        <div class="panel-title">Truck Info</div>
+        <div class="info-row"><span class="info-label">Operator</span><span class="info-val">R. Krishnamurthy</span></div>
+        <div class="info-row"><span class="info-label">Shift start</span><span class="info-val">06:00 AEST</span></div>
+        <div class="info-row"><span class="info-label">Total cycles</span><span class="info-val">47</span></div>
+        <div style="margin-top:12px" class="alert-banner">CARRY-BACK DETECTED</div>
+      </div>
+      <div class="panel">
+        <div class="panel-title yellow">Current Cycle #48</div>
+        <div class="info-row"><span class="info-label">Load time</span><span class="info-val">06:14</span></div>
+        <div class="info-row"><span class="info-label">Haul distance</span><span class="info-val">2.3 km</span></div>
+        <div class="info-row"><span class="info-label">Dump start</span><span class="info-val">10:51:22</span></div>
+        <div class="info-row"><span class="info-label">Dump duration</span><span class="info-val">43s</span></div>
+        <div class="info-row"><span class="info-label">Bed angle</span><span class="info-val red">47.3°</span></div>
+        <div class="info-row"><span class="info-label">Optimal angle</span><span class="info-val yellow">52.1°</span></div>
+        <div class="info-row"><span class="info-label">Material type</span><span class="info-val">Wet clay / fine ore</span></div>
+        <div class="info-row"><span class="info-label">Moisture</span><span class="info-val warn">18.4%</span></div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">Last 10 Cycles</div>
+        <div class="cycle-chart-container"><canvas id="cycleChart"></canvas></div>
+      </div>
+    </div>
+    <div class="detail-center">
+      <div class="panel">
+        <div class="bed-viz-title">
+          Bed Visualization
+          <div class="view-toggle">
+            <button class="view-btn active">3D SIDE</button>
+            <button class="view-btn">TOP</button>
+          </div>
+        </div>
+        <div class="bed-3d" id="bedViz3d">
+          <svg class="bed-svg" viewBox="0 0 700 380" xmlns="http://www.w3.org/2000/svg">
+            <!-- Bed shape -->
+            <defs>
+              <linearGradient id="bedGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#1e2330"/>
+                <stop offset="100%" style="stop-color:#141820"/>
+              </linearGradient>
+            </defs>
+            <polygon points="120,40 580,40 640,340 60,340" fill="url(#bedGrad)" stroke="#252a35" stroke-width="2"/>
+            <!-- Grid lines -->
+            <line x1="350" y1="40" x2="350" y2="340" stroke="#252a35" stroke-width="1" stroke-dasharray="4,4"/>
+            <line x1="120" y1="190" x2="640" y2="190" stroke="#252a35" stroke-width="1" stroke-dasharray="4,4"/>
+          </svg>
+          <!-- Zone circles -->
+          <div class="zone-circle alert" style="left:27%;top:35%" onclick="zoneClick('FL')">FL<div class="zone-sub">5.3t</div></div>
+          <div class="zone-circle clear" style="left:50%;top:35%">FC<div class="zone-sub">0.0t</div></div>
+          <div class="zone-circle clear" style="left:73%;top:35%">FR<div class="zone-sub">0.0t</div></div>
+          <div class="zone-circle alert" style="left:27%;top:70%" onclick="zoneClick('RL')">RL<div class="zone-sub">2.1t</div></div>
+          <div class="zone-circle clear" style="left:50%;top:70%">RC<div class="zone-sub">0.0t</div></div>
+          <div class="zone-circle clear" style="left:73%;top:70%">RR<div class="zone-sub">0.0t</div></div>
+        </div>
+      </div>
+      <div class="timeline-bar">
+        <div class="timeline-title">Dump Cycle Timeline</div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="font-size:10px;color:var(--text3);font-family:var(--mono)">RAISED</span><span style="font-size:10px;color:var(--text3);font-family:var(--mono)">LOWERED</span></div>
+        <div class="timeline-track">
+          <div class="timeline-fill" id="timelineFill" style="width:72%">
+            <div class="timeline-thumb"></div>
+          </div>
+        </div>
+        <div class="timeline-status" id="timelineStatus">T+43s — Vibration sequence initiated</div>
+      </div>
+    </div>
+    <div class="detail-right">
+      <div class="panel">
+        <div class="panel-title">Sensor Telemetry</div>
+        <div class="sensor-row">
+          <div class="sensor-header"><span class="sensor-name">Load Cell</span><span class="sensor-val ok">5.3t detected</span></div>
+          <div class="sensor-bars" id="loadBars"></div>
+        </div>
+        <div class="sensor-row">
+          <div class="sensor-header"><span class="sensor-name">Acoustic Array</span><span class="sensor-val warn">-56Hz deviation</span></div>
+          <div class="sensor-bars" id="acousticBars"></div>
+        </div>
+        <div class="sensor-row">
+          <div class="sensor-header"><span class="sensor-name">Camera (IP67)</span><span class="sensor-val ok">FL, RL zones</span></div>
+          <div class="sensor-bars" id="cameraBars"></div>
+        </div>
+        <div class="sensor-row">
+          <div class="sensor-header"><span class="sensor-name">Ultrasonic</span><span class="sensor-val ok">12.3cm avg</span></div>
+          <div class="sensor-bars" id="ultrasonicBars"></div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">AI Decision Log</div>
+        <div class="ai-log" id="aiLog"></div>
+      </div>
+      <div class="action-panel">
+        <div class="action-title">Recommended Action</div>
+        <div class="action-row"><span class="action-badge immediate">IMMEDIATE</span><span class="action-text">Increase dump angle to 52.1°</span></div>
+        <div class="action-row"><span class="action-badge scheduled">SCHEDULED</span><span class="action-text">Bed surface inspection at shift end</span></div>
+        <div class="action-row"><span class="action-badge note">NOTE</span><span class="action-text">Material moisture 18.4% — wet clay protocol active</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ACOUSTIC PAGE -->
+<div class="page" id="page-acoustic">
+  <div class="page-title" style="margin-bottom:20px">Acoustic Analysis Lab</div>
+  <div class="acoustic-grid">
+    <div class="panel">
+      <div class="panel-title">Live Spectrum Analyzer</div>
+      <div class="spectrum-container"><canvas id="spectrumCanvas" class="spectrum-canvas"></canvas></div>
+      <div style="display:flex;gap:16px;margin-top:8px;font-family:var(--mono);font-size:11px;color:var(--text2)">
+        <span>Peak freq: <span style="color:var(--yellow)" id="peakFreq">791 Hz</span></span>
+        <span>Baseline: <span style="color:var(--text)">847 Hz</span></span>
+        <span>Δ: <span style="color:var(--red)">-56 Hz</span></span>
+        <span>RMS: <span style="color:var(--text)">0.73</span></span>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">Spectrogram — 30s Window</div>
+      <canvas id="spectrogramCanvas" width="400" height="220" style="width:100%;border-radius:6px;background:#0a1a0a"></canvas>
+    </div>
+    <div>
+      <div class="panel" style="margin-bottom:14px">
+        <div class="panel-title">Material Classifier v2.1</div>
+        <div class="classifier-bar"><div class="cls-header"><span>Wet clay</span><span>82.3%</span></div><div class="cls-track"><div class="cls-fill" style="width:82.3%"></div></div></div>
+        <div class="classifier-bar"><div class="cls-header"><span>Fine ore</span><span>41.7%</span></div><div class="cls-track"><div class="cls-fill" style="width:41.7%"></div></div></div>
+        <div class="classifier-bar"><div class="cls-header"><span>Dry rock</span><span>8.2%</span></div><div class="cls-track"><div class="cls-fill" style="width:8.2%;background:var(--orange)"></div></div></div>
+        <div class="classifier-bar"><div class="cls-header"><span>Sand/gravel</span><span>2.1%</span></div><div class="cls-track"><div class="cls-fill" style="width:2.1%;background:var(--text3)"></div></div></div>
+        <div class="material-badge wet-clay" style="margin-top:14px">
+          <div class="material-type">WET CLAY</div>
+          <div class="material-conf">(HIGH CONFIDENCE)</div>
+        </div>
+        <div class="protocol-box">
+          <div class="protocol-title">Recommended Protocol:</div>
+          <div class="protocol-line">EXTENDED VIBRATION — 5s duration</div>
+          <div class="protocol-line">INCREASE BED ANGLE +4.8°</div>
+          <div class="protocol-flag">⚑ FLAG FOR INSPECTION AFTER CYCLE</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="acoustic-bottom">
+    <div class="panel">
+      <div class="panel-title">Historical Acoustic Signatures</div>
+      <canvas id="historicalCanvas" style="width:100%;height:200px"></canvas>
+      <div style="margin-top:8px;background:rgba(245,200,0,0.08);border:1px solid rgba(245,200,0,0.2);border-radius:5px;padding:8px 12px;font-size:11px;color:var(--yellow);font-family:var(--mono)">
+        ⚠ PATTERN: Material moisture increasing. Recommend operator alert.
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">Vibration Response Log</div>
+      <table class="vib-table">
+        <thead><tr><th>CYCLE</th><th>CB</th><th>V.CYC</th><th>DUR</th><th>RESULT</th></tr></thead>
+        <tbody>
+          <tr><td>48</td><td>5.3t</td><td>2</td><td>8s</td><td class="cleared-badge">✓ CLEARED</td></tr>
+          <tr><td>47</td><td>3.8t</td><td>1</td><td>4s</td><td class="cleared-badge">✓ CLEARED</td></tr>
+          <tr><td>46</td><td>2.1t</td><td>1</td><td>4s</td><td class="cleared-badge">✓ CLEARED</td></tr>
+          <tr><td>45</td><td>0.8t</td><td>1</td><td>2s</td><td class="cleared-badge">✓ CLEARED</td></tr>
+          <tr><td>44</td><td>1.1t</td><td>1</td><td>3s</td><td class="cleared-badge">✓ CLEARED</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ANALYTICS PAGE -->
+<div class="page" id="page-analytics">
+  <div class="page-header">
+    <div class="page-title">Analytics &amp; Reporting</div>
+    <div style="display:flex;gap:6px">
+      <button class="toggle-opt active" onclick="setTimeRange(this,'today')">TODAY</button>
+      <button class="toggle-opt" onclick="setTimeRange(this,'week')" style="border-radius:0">THIS WEEK</button>
+      <button class="toggle-opt" onclick="setTimeRange(this,'month')" style="border-radius:0">THIS MONTH</button>
+      <button class="toggle-opt" onclick="setTimeRange(this,'custom')" style="border-radius:5px">CUSTOM</button>
+    </div>
+  </div>
+  <div class="kpi-grid">
+    <div class="kpi-card"><div class="kpi-label">Total Payload Recovered</div><div><span class="kpi-val">847.3</span><span class="kpi-unit"> t</span></div><div class="kpi-delta pos">↑ +12.4%</div></div>
+    <div class="kpi-card"><div class="kpi-label">Total Fuel Saved</div><div><span class="kpi-val">5,832</span><span class="kpi-unit"> L</span></div><div class="kpi-delta pos">↑ +8.1%</div></div>
+    <div class="kpi-card"><div class="kpi-label">Avg Carry-Back Rate</div><div><span class="kpi-val">1.24</span><span class="kpi-unit">%</span></div><div class="kpi-delta neg">↓ -0.3%</div></div>
+    <div class="kpi-card"><div class="kpi-label">Vibration Cycles Today</div><div><span class="kpi-val">143</span></div></div>
+    <div class="kpi-card"><div class="kpi-label">System Detections</div><div><span class="kpi-val">89</span></div><div style="font-size:10px;color:var(--blue);font-family:var(--mono);margin-top:3px">98.9% acc</div></div>
+  </div>
+  <div class="analytics-grid">
+    <div class="panel">
+      <div class="panel-title">Payload Efficiency Timeline</div>
+      <canvas id="payloadChart" style="width:100%;height:220px"></canvas>
+    </div>
+    <div class="panel">
+      <div class="panel-title">Carry-Back by Material Type</div>
+      <div style="margin-bottom:10px">
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text2);margin-bottom:5px"><span>Wet clay</span><span>4.2%</span></div>
+        <div style="height:14px;background:var(--bg3);border-radius:3px;overflow:hidden;margin-bottom:8px"><div style="height:100%;width:84%;background:var(--yellow);border-radius:3px"></div></div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text2);margin-bottom:5px"><span>Fine ore</span><span>2.8%</span></div>
+        <div style="height:14px;background:var(--bg3);border-radius:3px;overflow:hidden;margin-bottom:8px"><div style="height:100%;width:56%;background:var(--yellow);border-radius:3px"></div></div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text2);margin-bottom:5px"><span>Mixed</span><span>1.9%</span></div>
+        <div style="height:14px;background:var(--bg3);border-radius:3px;overflow:hidden;margin-bottom:8px"><div style="height:100%;width:38%;background:var(--yellow);border-radius:3px"></div></div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text2);margin-bottom:5px"><span>Dry rock</span><span>0.6%</span></div>
+        <div style="height:14px;background:var(--bg3);border-radius:3px;overflow:hidden"><div style="height:100%;width:12%;background:var(--yellow);border-radius:3px"></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="analytics-bottom">
+    <div class="panel">
+      <div class="panel-title">Carry-Back Severity — Fleet × Day</div>
+      <div class="heatmap" id="heatmap"></div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">ROI Calculator (Interactive)</div>
+      <div class="roi-input"><div class="roi-label">Fleet size (trucks):</div><input class="roi-field" id="roiFleet" type="number" value="100" oninput="calcROI()"></div>
+      <div class="roi-input"><div class="roi-label">Avg payload (t):</div><input class="roi-field" id="roiPayload" type="number" value="240" oninput="calcROI()"></div>
+      <div class="roi-input"><div class="roi-label">Carry-back %:</div><input class="roi-field" id="roiCB" type="number" value="3.2" step="0.1" oninput="calcROI()"></div>
+      <div class="roi-results" id="roiResults"></div>
+      <button class="export-btn">EXPORT REPORT ↗</button>
+    </div>
+    <div class="panel">
+      <div class="panel-title">Alerts Summary (24h)</div>
+      <table class="alerts-table">
+        <thead><tr><th>TIME</th><th>TRUCK</th><th>SEV</th><th>CB</th><th>RES</th></tr></thead>
+        <tbody>
+          <tr><td>10:52</td><td>793-11</td><td><span class="sev-badge high">HIGH</span></td><td>5.3t</td><td class="res-badge">✓ 8s</td></tr>
+          <tr><td>09:14</td><td>785-04</td><td><span class="sev-badge med">MED</span></td><td>2.1t</td><td class="res-badge">✓ 4s</td></tr>
+          <tr><td>08:33</td><td>793-02</td><td><span class="sev-badge low">LOW</span></td><td>0.8t</td><td class="res-badge">✓ 2s</td></tr>
+          <tr><td>07:11</td><td>797-01</td><td><span class="sev-badge med">MED</span></td><td>1.9t</td><td class="res-badge">✓ 4s</td></tr>
+          <tr><td>06:44</td><td>785-12</td><td><span class="sev-badge low">LOW</span></td><td>0.6t</td><td class="res-badge">✓ 2s</td></tr>
+        </tbody>
+      </table>
+      <div class="resolution-rate"><div class="res-rate-val">100%</div><div class="res-rate-label">Resolution Rate</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- MAINTENANCE PAGE -->
+<div class="page" id="page-maintenance">
+  <div class="page-title" style="margin-bottom:20px">Predictive Maintenance</div>
+  <div class="maint-grid">
+    <div>
+      <div class="panel-title" style="color:var(--text3);font-family:var(--cond);font-size:12px;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px">Maintenance Alerts</div>
+      <div class="alert-item high">
+        <div><span class="alert-sev high">HIGH</span><span class="alert-truck">CAT 793-11</span></div>
+        <div class="alert-desc">Bed liner wear detected (zone FL)</div>
+        <div class="alert-remain">Est. remaining: <span class="cycles">340 cycles</span></div>
+        <div class="alert-action">Action: Inspect at shift end</div>
+      </div>
+      <div class="alert-item med">
+        <div><span class="alert-sev med">MED</span><span class="alert-truck">CAT 785-04</span></div>
+        <div class="alert-desc">Camera lens fouling (90% clean)</div>
+        <div class="alert-action">Action: Manual clean next access</div>
+      </div>
+      <div class="alert-item low">
+        <div><span class="alert-sev low">LOW</span><span class="alert-truck">CAT 797-03</span></div>
+        <div class="alert-desc">Vibrator motor hours: 847h</div>
+        <div class="alert-remain">Est. remaining: <span style="color:var(--yellow);font-family:var(--mono);font-weight:700">153h</span></div>
+        <div class="alert-action">Action: Scheduled replacement: 1000h</div>
+      </div>
+      <div class="alert-item low">
+        <div><span class="alert-sev low">LOW</span><span class="alert-truck">CAT 793-08</span></div>
+        <div class="alert-desc">Ultrasonic calibration due</div>
+        <div class="alert-action">Action: Last: 2026-03-28 / Interval: 30 days</div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">Bed Wear Analysis — CAT 793-11</div>
+      <div style="position:relative;width:100%;max-width:400px;margin:0 auto">
+        <svg viewBox="0 0 400 300" style="width:100%">
+          <defs>
+            <linearGradient id="flGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#8b1a1a"/><stop offset="100%" style="stop-color:#c62828"/></linearGradient>
+            <linearGradient id="frGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#1a4731"/><stop offset="100%" style="stop-color:#2e7d32"/></linearGradient>
+            <linearGradient id="rlGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#7c2900"/><stop offset="100%" style="stop-color:#bf360c"/></linearGradient>
+            <linearGradient id="rcGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#7c2900"/><stop offset="100%" style="stop-color:#bf360c"/></linearGradient>
+            <linearGradient id="rrGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#1a4731"/><stop offset="100%" style="stop-color:#2e7d32"/></linearGradient>
+          </defs>
+          <!-- Bed shape divided into zones -->
+          <polygon points="80,30 200,30 200,150 80,150" fill="url(#flGrad)" stroke="#0a0b0d" stroke-width="3"/>
+          <polygon points="200,30 320,30 320,150 200,150" fill="url(#frGrad)" stroke="#0a0b0d" stroke-width="3"/>
+          <polygon points="80,150 200,150 200,270 80,270" fill="url(#rlGrad)" stroke="#0a0b0d" stroke-width="3"/>
+          <polygon points="200,150 260,150 260,270 200,270" fill="url(#rcGrad)" stroke="#0a0b0d" stroke-width="3"/>
+          <polygon points="260,150 320,150 320,270 260,270" fill="url(#rrGrad)" stroke="#0a0b0d" stroke-width="3"/>
+          <!-- Labels -->
+          <text x="140" y="95" text-anchor="middle" fill="white" font-family="Barlow Condensed" font-size="20" font-weight="700">FL</text>
+          <text x="140" y="115" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-family="Space Mono" font-size="11">78%</text>
+          <text x="260" y="95" text-anchor="middle" fill="white" font-family="Barlow Condensed" font-size="20" font-weight="700">FR</text>
+          <text x="260" y="115" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-family="Space Mono" font-size="11">12%</text>
+          <text x="140" y="215" text-anchor="middle" fill="white" font-family="Barlow Condensed" font-size="20" font-weight="700">RL</text>
+          <text x="140" y="235" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-family="Space Mono" font-size="11">62%</text>
+          <text x="230" y="215" text-anchor="middle" fill="white" font-family="Barlow Condensed" font-size="16" font-weight="700">RC</text>
+          <text x="230" y="232" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-family="Space Mono" font-size="10">58%</text>
+          <text x="290" y="215" text-anchor="middle" fill="white" font-family="Barlow Condensed" font-size="16" font-weight="700">RR</text>
+          <text x="290" y="232" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-family="Space Mono" font-size="10">18%</text>
+        </svg>
+        <div style="display:flex;gap:12px;justify-content:center;margin-top:8px">
+          <div style="display:flex;align-items:center;gap:4px"><div style="width:10px;height:10px;border-radius:2px;background:#2e7d32"></div><span style="font-size:9px;font-family:var(--mono);color:var(--text3)">Excellent (0-45%)</span></div>
+          <div style="display:flex;align-items:center;gap:4px"><div style="width:10px;height:10px;border-radius:2px;background:#bf360c"></div><span style="font-size:9px;font-family:var(--mono);color:var(--text3)">Warning (60-75%)</span></div>
+          <div style="display:flex;align-items:center;gap:4px"><div style="width:10px;height:10px;border-radius:2px;background:#c62828"></div><span style="font-size:9px;font-family:var(--mono);color:var(--text3)">Critical (75%+)</span></div>
+        </div>
+      </div>
+      <div style="background:var(--red-dim);border:1px solid rgba(229,57,53,0.3);border-radius:6px;padding:12px;margin-top:14px">
+        <div style="font-family:var(--cond);font-weight:700;font-size:13px;color:var(--red);margin-bottom:6px">PROJECTED BED LINER REPLACEMENT</div>
+        <div style="font-size:12px;color:var(--text2)">Rear-Left zone: 340 cycles / ~7 days at current rate</div>
+      </div>
+      <div style="padding:10px 12px;border:1px solid var(--border);border-radius:6px;margin-top:8px;font-size:12px;color:var(--text2)">Full bed replacement: ~2,100 cycles / ~44 days</div>
+    </div>
+    <div>
+      <div class="panel-title" style="color:var(--text3);font-family:var(--cond);font-size:12px;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px">Maintenance Schedule</div>
+      <div id="scheduleList"></div>
+      <div class="cost-box" style="margin-top:16px">
+        <div class="cost-title">Cost Avoidance Summary</div>
+        <div class="cost-row"><span class="cost-label">Predicted interventions</span><span class="cost-val">$48,200</span></div>
+        <div class="cost-row"><span class="cost-label">Unplanned downtime avoided</span><span class="cost-val">$124,500</span></div>
+        <div class="cost-row"><span class="cost-label">Liner replacement optimized</span><span class="cost-val">$32,800</span></div>
+        <div style="border-top:1px solid rgba(0,200,83,0.2);margin-top:8px;padding-top:8px">
+          <div class="cost-row"><span class="cost-label" style="font-weight:700;color:var(--text)">Total this month</span><span class="cost-val" style="font-size:16px;font-weight:700">$205,500</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIG PAGE -->
+<div class="page" id="page-config">
+  <div class="page-title" style="margin-bottom:20px">System Configuration</div>
+  <div class="config-grid">
+    <div>
+      <div class="panel" style="margin-bottom:16px">
+        <div class="config-title">Load Cell Config</div>
+        <div class="config-row"><div class="config-label">Threshold (kg):</div><input class="config-input" value="500"></div>
+        <div class="config-row"><div class="config-label">Sampling rate (Hz):</div><input class="config-input" value="10"></div>
+        <div class="config-row"><div class="config-label">Calibration offset:</div><input class="config-input" value="0.023" readonly></div>
+        <div class="config-row"><div class="config-label">Last calibrated:</div><div class="config-display">2026-04-05 06:00</div></div>
+        <div style="margin-top:8px"><span class="calibrated-badge"><span class="pulse-dot" style="background:var(--green);width:6px;height:6px;margin-right:2px"></span>CALIBRATED</span></div>
+      </div>
+      <div class="panel" style="margin-bottom:16px">
+        <div class="config-title">Acoustic Config</div>
+        <div class="config-row"><div class="config-label">Baseline capture interval (hr):</div><input class="config-input" value="24"></div>
+        <div class="config-row"><div class="config-label">Deviation threshold (Hz):</div><input class="config-input" value="15"></div>
+        <div class="config-row"><div class="config-label">Frequency range:</div><div class="config-display">200–1200 Hz</div></div>
+        <div class="config-row">
+          <div class="config-label">Sensitivity:</div>
+          <div class="toggle-group">
+            <div class="toggle-opt active" onclick="toggleOpt(this)">HIGH</div>
+            <div class="toggle-opt" onclick="toggleOpt(this)">MED</div>
+            <div class="toggle-opt" onclick="toggleOpt(this)">LOW</div>
+          </div>
+        </div>
+        <div class="config-row"><div class="config-label">Noise filter:</div><label class="switch"><input type="checkbox" checked><div class="switch-track"></div><div class="switch-thumb"></div></label></div>
+      </div>
+      <div class="panel">
+        <div class="config-title">Camera Config</div>
+        <div class="config-row">
+          <div class="config-label">Resolution:</div>
+          <div class="toggle-group">
+            <div class="toggle-opt active" onclick="toggleOpt(this)">1080p</div>
+            <div class="toggle-opt" onclick="toggleOpt(this)">720p</div>
+          </div>
+        </div>
+        <div class="config-row"><div class="config-label">Detection model:</div><div class="config-display">YOLOv8-mining v2.3</div></div>
+        <div class="config-row"><div class="config-label">Confidence threshold:</div><input class="config-input" value="0.85"></div>
+        <div class="config-row"><div class="config-label">Night mode:</div><div class="config-display">AUTO</div></div>
+      </div>
+      <div class="panel" style="margin-top:16px">
+        <div class="config-title">Vibrator Config</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div class="config-row"><div class="config-label">Min duration (s):</div><input class="config-input" value="2"></div>
+          <div class="config-row"><div class="config-label">Max duration (s):</div><input class="config-input" value="8"></div>
+        </div>
+        <div class="config-row"><div class="config-label">Max cycles per dump:</div><input class="config-input" value="3"></div>
+        <div class="config-row"><div class="config-label">Frequency (Hz):</div><input class="config-input" value="25"></div>
+        <div class="config-row"><div class="config-label">Cool-down period (s):</div><input class="config-input" value="30"></div>
+      </div>
+      <button class="save-btn" onclick="saveConfig()">SAVE CONFIG</button>
+    </div>
+    <div>
+      <div class="panel" style="margin-bottom:16px">
+        <div class="config-title">Hardware Topology</div>
+        <div class="topo-container" style="height:320px">
+          <svg class="topo-svg" viewBox="0 0 700 300">
+            <!-- Connection lines -->
+            <line x1="160" y1="55" x2="340" y2="130" stroke="#f5c800" stroke-width="1.5" opacity="0.4"/>
+            <line x1="160" y1="130" x2="340" y2="150" stroke="#3a3d4a" stroke-width="1.5"/>
+            <line x1="160" y1="205" x2="340" y2="160" stroke="#3a3d4a" stroke-width="1.5"/>
+            <line x1="160" y1="245" x2="340" y2="170" stroke="#3a3d4a" stroke-width="1.5"/>
+            <line x1="420" y1="150" x2="490" y2="150" stroke="#f5c800" stroke-width="2"/>
+            <line x1="490" y1="150" x2="580" y2="100" stroke="#3a3d4a" stroke-width="1.5"/>
+            <line x1="490" y1="150" x2="580" y2="200" stroke="#3a3d4a" stroke-width="1.5"/>
+            <!-- USB label -->
+            <text x="200" y="88" fill="#5a6275" font-family="Space Mono" font-size="9">USB</text>
+            <text x="222" y="140" fill="#5a6275" font-family="Space Mono" font-size="9">I²C</text>
+            <text x="450" y="145" fill="#f5c800" font-family="Space Mono" font-size="9">SPI</text>
+            <text x="540" y="88" fill="#5a6275" font-family="Space Mono" font-size="9">4G</text>
+            <text x="530" y="195" fill="#5a6275" font-family="Space Mono" font-size="9">J1939</text>
+          </svg>
+          <div class="topo-node" style="left:50px;top:35px"><div class="node-name">IP67 Camera</div><div class="node-sub">1080p</div></div>
+          <div class="topo-node" style="left:50px;top:110px"><div class="node-name">Acoustic x2</div><div class="node-sub">I²C</div></div>
+          <div class="topo-node" style="left:50px;top:185px"><div class="node-name">Load Cell x2</div><div class="node-sub">I²C</div></div>
+          <div class="topo-node" style="left:50px;top:230px"><div class="node-name">Ultrasonic x2</div><div class="node-sub">I²C</div></div>
+          <div class="topo-node" style="left:290px;top:120px"><div class="node-name">MCU STM32</div><div class="node-sub">Sensor Hub</div></div>
+          <div class="topo-node highlight" style="left:400px;top:100px"><div class="node-name">Jetson Orin NX</div><div class="node-sub">Edge AI Compute</div><div class="node-sub">TensorRT</div></div>
+          <div class="topo-node" style="left:530px;top:68px"><div class="node-name">Mine Control</div><div class="node-sub">4G/LTE</div></div>
+          <div class="topo-node" style="left:530px;top:175px"><div class="node-name">Truck ECU / VIMS</div><div class="node-sub">CAN J1939</div></div>
+        </div>
+      </div>
+      <div class="panel" style="margin-bottom:16px">
+        <div class="config-title">System Metrics</div>
+        <table class="sys-table">
+          <thead><tr><th>COMPONENT</th><th>TEMP</th><th>CPU/LOAD</th><th>STATUS</th></tr></thead>
+          <tbody>
+            <tr><td>Jetson Orin NX</td><td>61°C</td><td>43%</td><td class="sys-ok">● OK</td></tr>
+            <tr><td>MCU STM32</td><td>38°C</td><td>12%</td><td class="sys-ok">● OK</td></tr>
+            <tr><td>IP67 Camera</td><td>44°C</td><td>—</td><td class="sys-ok">● OK</td></tr>
+            <tr><td>Acoustic Array</td><td>35°C</td><td>—</td><td class="sys-ok">● OK</td></tr>
+            <tr><td>Load Cell Array</td><td>31°C</td><td>—</td><td class="sys-ok">● OK</td></tr>
+            <tr><td>CAN Bus</td><td>—</td><td>12 msg/s</td><td class="sys-ok">● OK</td></tr>
+            <tr><td>4G Uplink</td><td>—</td><td>2.3 Mbps</td><td class="sys-ok">● OK</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="panel">
+        <div class="config-title">Edge AI Model Performance</div>
+        <div class="edge-ai-box">
+          <div class="edge-ai-item"><div class="edge-ai-label">Model</div><div class="edge-ai-val">YOLOv8-mining-v2.3</div></div>
+          <div class="edge-ai-item"><div class="edge-ai-label">mAP</div><div class="edge-ai-val good">0.94</div></div>
+          <div class="edge-ai-item"><div class="edge-ai-label">Inference</div><div class="edge-ai-val warn">23ms</div></div>
+          <div class="edge-ai-item"><div class="edge-ai-label">Last retrained</div><div class="edge-ai-val">2026-03-28</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /content -->
+</div><!-- /main -->
+</div><!-- /app -->
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────────────
+const trucks = [
+  {id:'CAT 793-11',model:'Caterpillar 793F',op:'R. Krishnamurthy',cycles:48,cb:5.3,alert:true,status:'CARRY-BACK DETECTED'},
+  {id:'CAT 785-04',model:'Caterpillar 785D',op:'J. Ramesh',cycles:52,cb:0.4,alert:false,status:'OPERATIONAL'},
+  {id:'CAT 797-01',model:'Caterpillar 797F',op:'M. Singh',cycles:41,cb:0.3,alert:false,status:'OPERATIONAL'},
+  {id:'CAT 793-02',model:'Caterpillar 793F',op:'A. Kumar',cycles:49,cb:0.5,alert:false,status:'OPERATIONAL'},
+  {id:'CAT 785-12',model:'Caterpillar 785D',op:'P. Sharma',cycles:44,cb:0.2,alert:false,status:'OPERATIONAL'},
+  {id:'CAT 797-03',model:'Caterpillar 797F',op:'S. Nair',cycles:38,cb:0.8,alert:false,status:'OPERATIONAL'},
+  {id:'CAT 793-08',model:'Caterpillar 793F',op:'V. Patel',cycles:51,cb:0.3,alert:false,status:'OPERATIONAL'},
+  {id:'CAT 785-07',model:'Caterpillar 785D',op:'D. Reddy',cycles:46,cb:0.6,alert:false,status:'OPERATIONAL'},
+];
+
+// ── FLEET GRID ────────────────────────────────────────────────────────────────
+function buildFleet() {
+  const grid = document.getElementById('fleet-grid');
+  grid.innerHTML = trucks.map(t => `
+    <div class="truck-card ${t.alert?'alert':''}" onclick="showPage('detail',document.querySelector('[data-page=detail]'))">
+      <div class="truck-card-header">
+        <div><div class="truck-id">${t.id}</div><div class="truck-model">${t.model}</div></div>
+        <div class="status-badge ${t.alert?'carry-back':'operational'}">${t.status}</div>
+      </div>
+      <div class="truck-stats">
+        <div class="stat"><div class="stat-label">Operator</div><div class="stat-val">${t.op.split(' ')[0][0]}. ${t.op.split(' ').pop()}</div></div>
+        <div class="stat"><div class="stat-label">Cycles Today</div><div class="stat-val">${t.cycles}</div></div>
+        <div class="stat"><div class="stat-label">Carry-Back</div><div class="stat-val ${t.cb>1?'warn':''}">${t.cb}%</div></div>
+      </div>
+      ${t.alert ? `<div class="bed-viz-mini"><div class="bed-viz-mini-label">Bed Status</div>
+        <div style="position:relative;height:44px"><svg viewBox="0 0 160 44" style="width:100%;height:100%"><polygon points="20,4 140,4 152,40 8,40" fill="#1a1f2a" stroke="#252a35" stroke-width="1.5"/></svg>
+        <div class="residue-dot" style="left:22%;top:18%">FL</div>
+        <div class="residue-dot" style="left:22%;top:55%">RL</div></div>
+        <div style="font-size:10px;color:var(--text3);font-family:var(--mono);margin-top:4px">Residue detected: FL, RL zones</div></div>` : ''}
+    </div>
+  `).join('');
+}
+
+// ── NAVIGATION ────────────────────────────────────────────────────────────────
+function showPage(name, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  const nb = document.querySelector(`[data-page="${name}"]`);
+  if (nb) nb.classList.add('active');
+  else if (btn && btn.classList) btn.classList.add('active');
+  // Init page-specific items
+  if (name==='detail') initDetail();
+  if (name==='acoustic') initAcoustic();
+  if (name==='analytics') initAnalytics();
+}
+
+// ── SENSOR BARS ───────────────────────────────────────────────────────────────
+function makeBars(id, color, count, animated) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.innerHTML = '';
+  for (let i=0;i<count;i++) {
+    const b = document.createElement('div');
+    b.className = `sensor-bar ${color}`;
+    b.style.height = (20+Math.random()*80)+'%';
+    el.appendChild(b);
+  }
+  if (animated) {
+    setInterval(()=>{
+      el.querySelectorAll('.sensor-bar').forEach(b=>{
+        b.style.height = (15+Math.random()*85)+'%';
+        b.style.transition = 'height 0.4s ease';
+      });
+    }, 600);
+  }
+}
+
+// ── AI LOG ────────────────────────────────────────────────────────────────────
+const logLines = [
+  {time:'10:51:22',key:'DUMP_START',val:'— angle 47.3°',cls:''},
+  {time:'10:52:05',key:'LOAD_CELL',val:'— post-dump: 5.3t',cls:'important'},
+  {time:'10:52:05',key:'ACOUSTIC',val:'— deviation: -56Hz',cls:'important'},
+  {time:'10:52:06',key:'CAMERA',val:'— residue_zones: [FL, RL]',cls:'important'},
+  {time:'10:52:06',key:'DECISION',val:'— carry_back CONFIRMED',cls:'important'},
+  {time:'10:52:07',key:'ACTION',val:'— vibration_seq INITIATED',cls:''},
+  {time:'10:52:11',key:'VIBRATION',val:'— cycle_1 COMPLETE',cls:'success'},
+  {time:'10:52:11',key:'RESCAN',val:'— residue PARTIAL (2.1t)',cls:''},
+  {time:'10:52:12',key:'ACTION',val:'— vibration_seq_2 INITIATED',cls:''},
+  {time:'10:52:16',key:'VIBRATION',val:'— cycle_2 COMPLETE',cls:'success'},
+  {time:'10:52:16',key:'RESCAN',val:'— residue CLEARED',cls:'success'},
+  {time:'10:52:17',key:'STATUS',val:'— CLEAR ✓',cls:'success'},
+];
+
+function initDetail() {
+  makeBars('loadBars','bar-yellow',18,true);
+  makeBars('acousticBars','bar-red',18,true);
+  makeBars('cameraBars','bar-green',18,true);
+  makeBars('ultrasonicBars','bar-blue',18,true);
+  const log = document.getElementById('aiLog');
+  log.innerHTML = logLines.map(l=>`<div class="log-line ${l.cls}"><span class="time">[${l.time}]</span> <span class="key">${l.key}</span><span class="val"> ${l.val}</span></div>`).join('');
+  log.scrollTop = log.scrollHeight;
+  drawCycleChart();
+}
+
+function drawCycleChart() {
+  const canvas = document.getElementById('cycleChart');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  canvas.width = canvas.offsetWidth * 2;
+  canvas.height = 80*2;
+  canvas.style.height = '80px';
+  ctx.scale(2,2);
+  const w = canvas.offsetWidth/2, h = 80;
+  const data = [0.2,0.8,0.3,3.8,0.4,2.1,0.8,1.1,0.5,5.3];
+  const maxV = Math.max(...data);
+  ctx.clearRect(0,0,w,h);
+  const bw = (w-20)/data.length;
+  data.forEach((v,i)=>{
+    const bh = (v/maxV)*(h-20);
+    const x = 10+i*bw+2;
+    ctx.fillStyle = v>3 ? 'rgba(229,57,53,0.8)' : v>1 ? 'rgba(255,109,0,0.8)' : 'rgba(245,200,0,0.6)';
+    ctx.beginPath();
+    ctx.roundRect(x,h-bh-5,bw-4,bh,2);
+    ctx.fill();
+    ctx.fillStyle = '#5a6275';
+    ctx.font = '8px Space Mono';
+    ctx.textAlign='center';
+    ctx.fillText(38+i,x+(bw-4)/2,h-1);
+  });
+}
+
+// ── ACOUSTIC ──────────────────────────────────────────────────────────────────
+let specAnim, spectroAnim;
+function initAcoustic() {
+  drawSpectrum();
+  drawSpectrogram();
+  drawHistorical();
+}
+
+function drawSpectrum() {
+  const canvas = document.getElementById('spectrumCanvas');
+  if (!canvas) return;
+  const dpr = window.devicePixelRatio||1;
+  const w = canvas.parentElement.offsetWidth;
+  const h = 220;
+  canvas.width = w*dpr; canvas.height = h*dpr;
+  canvas.style.width = w+'px'; canvas.style.height = h+'px';
+  const ctx = canvas.getContext('2d'); ctx.scale(dpr,dpr);
+  let phase = 0;
+  function frame() {
+    ctx.clearRect(0,0,w,h);
+    ctx.fillStyle = '#0d1117'; ctx.fillRect(0,0,w,h);
+    // Grid
+    ctx.strokeStyle = '#1e2330'; ctx.lineWidth = 1;
+    for (let i=0;i<5;i++) { const y=h*0.2+i*(h*0.6/4); ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(w,y); ctx.stroke(); }
+    // Baseline (dashed red)
+    const baseY = h*0.38;
+    ctx.setLineDash([6,4]); ctx.strokeStyle='rgba(229,57,53,0.5)'; ctx.lineWidth=1.5;
+    ctx.beginPath(); ctx.moveTo(0,baseY); ctx.lineTo(w,baseY); ctx.stroke();
+    ctx.setLineDash([]);
+    // Peak marker
+    const peakX = w*0.39;
+    ctx.fillStyle = 'rgba(200,0,0,0.25)';
+    ctx.fillRect(peakX-14,0,28,h);
+    // White spectrum curve (live)
+    const peakFreq = 791+Math.sin(phase*0.7)*8;
+    document.getElementById('peakFreq').textContent = Math.round(peakFreq)+' Hz';
+    ctx.beginPath(); ctx.strokeStyle='#ffffff'; ctx.lineWidth=2;
+    for (let x=0;x<w;x++) {
+      const freq = (x/w)*2000;
+      const d = freq - peakFreq;
+      const gauss = Math.exp(-d*d/8000)*0.85;
+      const noise = (Math.random()-0.5)*0.04;
+      const y = h - gauss*(h*0.72) - noise*h - h*0.08;
+      x===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+    // Yellow dashed baseline curve
+    ctx.beginPath(); ctx.strokeStyle='rgba(245,200,0,0.6)'; ctx.lineWidth=1.5; ctx.setLineDash([4,3]);
+    const baseFreq = 847;
+    for (let x=0;x<w;x++) {
+      const freq = (x/w)*2000;
+      const d = freq - baseFreq;
+      const gauss = Math.exp(-d*d/8000)*0.75;
+      const y = h - gauss*(h*0.65) - h*0.08;
+      x===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+    }
+    ctx.stroke(); ctx.setLineDash([]);
+    // Freq label
+    ctx.fillStyle='var(--yellow)'; ctx.font='11px Space Mono';
+    ctx.fillText(Math.round(peakFreq)+'Hz', peakX-18, 18);
+    // Axis labels
+    ctx.fillStyle='#5a6275'; ctx.font='10px Space Mono';
+    ctx.textAlign='left'; ctx.fillText('0 Hz',4,h-4);
+    ctx.textAlign='right'; ctx.fillText('2000 Hz',w-4,h-4);
+    phase+=0.05;
+    specAnim = requestAnimationFrame(frame);
+  }
+  if (specAnim) cancelAnimationFrame(specAnim);
+  frame();
+}
+
+function drawSpectrogram() {
+  const canvas = document.getElementById('spectrogramCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width, h = canvas.height;
+  let offset = 0;
+  function frame() {
+    // Shift left
+    const img = ctx.getImageData(1,0,w-1,h);
+    ctx.putImageData(img,0,0);
+    // New column
+    for (let y=0;y<h;y++) {
+      const freq = (1-y/h)*1200;
+      let intensity = 0;
+      if (freq>700&&freq<850) intensity = 0.7+Math.random()*0.3;
+      else if (freq>400&&freq<1000) intensity = 0.1+Math.random()*0.2;
+      else intensity = Math.random()*0.1;
+      // Green-yellow colormap
+      const r = Math.floor(intensity*100);
+      const g = Math.floor(intensity*255);
+      const b = Math.floor(intensity*30);
+      ctx.fillStyle = `rgb(${r},${g},${b})`;
+      ctx.fillRect(w-1, y, 1, 1);
+    }
+    offset++;
+    spectroAnim = requestAnimationFrame(frame);
+  }
+  if (spectroAnim) cancelAnimationFrame(spectroAnim);
+  frame();
+}
+
+function drawHistorical() {
+  const canvas = document.getElementById('historicalCanvas');
+  if (!canvas) return;
+  const dpr = window.devicePixelRatio||1;
+  const w = canvas.offsetWidth;
+  const h = 200;
+  canvas.width = w*dpr; canvas.height = h*dpr;
+  canvas.style.height = h+'px';
+  const ctx = canvas.getContext('2d'); ctx.scale(dpr,dpr);
+  ctx.fillStyle='#0d1117'; ctx.fillRect(0,0,w,h);
+  const data = Array.from({length:40},(_,i)=>{
+    if(i>34) return 40+Math.random()*30;
+    return 5+Math.random()*20;
+  });
+  const maxV=80, minV=0;
+  // Threshold lines
+  [[20,'rgba(245,200,0,0.3)'],[40,'rgba(229,57,53,0.3)']].forEach(([v,c])=>{
+    const y = h-10-(v/(maxV-minV))*(h-20);
+    ctx.strokeStyle=c; ctx.lineWidth=1; ctx.setLineDash([4,3]);
+    ctx.beginPath(); ctx.moveTo(30,y); ctx.lineTo(w-10,y); ctx.stroke();
+  });
+  ctx.setLineDash([]);
+  // Points
+  data.forEach((v,i)=>{
+    const x = 30+(i/(data.length-1))*(w-40);
+    const y = h-10-(v/(maxV-minV))*(h-20);
+    ctx.fillStyle = v>40 ? '#e53935' : v>20 ? '#ff6d00' : '#f5c800';
+    ctx.beginPath(); ctx.arc(x,y,3,0,Math.PI*2); ctx.fill();
+    if(i>0){
+      const px = 30+((i-1)/(data.length-1))*(w-40);
+      const py = h-10-(data[i-1]/(maxV-minV))*(h-20);
+      ctx.strokeStyle=v>40?'rgba(229,57,53,0.5)':v>20?'rgba(255,109,0,0.5)':'rgba(245,200,0,0.3)';
+      ctx.lineWidth=1.5;
+      ctx.beginPath(); ctx.moveTo(px,py); ctx.lineTo(x,y); ctx.stroke();
+    }
+  });
+  // Axis label
+  ctx.fillStyle='#5a6275'; ctx.font='9px Space Mono';
+  ctx.textAlign='center'; ctx.fillText('Cycle Number',w/2,h-1);
+  ctx.save(); ctx.translate(14,h/2); ctx.rotate(-Math.PI/2);
+  ctx.fillText('Deviation (Hz)',0,0); ctx.restore();
+}
+
+// ── ANALYTICS ─────────────────────────────────────────────────────────────────
+function initAnalytics() {
+  calcROI();
+  buildHeatmap();
+  drawPayloadChart();
+}
+
+function drawPayloadChart() {
+  const canvas = document.getElementById('payloadChart');
+  if (!canvas) return;
+  const dpr = window.devicePixelRatio||1;
+  const w = canvas.offsetWidth;
+  const h = 220;
+  canvas.width = w*dpr; canvas.height = h*dpr;
+  canvas.style.height = h+'px';
+  const ctx = canvas.getContext('2d'); ctx.scale(dpr,dpr);
+  const days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  const vals = [800,650,700,1100,1550,1700,1847];
+  const target = 2000;
+  const pad = {l:40,r:20,t:20,b:30};
+  const cw = w-pad.l-pad.r, ch = h-pad.t-pad.b;
+  // Area
+  const grad = ctx.createLinearGradient(0,pad.t,0,pad.t+ch);
+  grad.addColorStop(0,'rgba(245,200,0,0.35)');
+  grad.addColorStop(1,'rgba(245,200,0,0.03)');
+  ctx.beginPath();
+  vals.forEach((v,i)=>{ const x=pad.l+i/(days.length-1)*cw, y=pad.t+ch-(v/target)*ch; i===0?ctx.moveTo(x,y):ctx.lineTo(x,y); });
+  ctx.lineTo(pad.l+cw,pad.t+ch); ctx.lineTo(pad.l,pad.t+ch); ctx.closePath();
+  ctx.fillStyle=grad; ctx.fill();
+  // Line
+  ctx.beginPath(); ctx.strokeStyle='#f5c800'; ctx.lineWidth=2.5;
+  vals.forEach((v,i)=>{ const x=pad.l+i/(days.length-1)*cw, y=pad.t+ch-(v/target)*ch; i===0?ctx.moveTo(x,y):ctx.lineTo(x,y); });
+  ctx.stroke();
+  // Target
+  ctx.setLineDash([6,4]); ctx.strokeStyle='rgba(255,255,255,0.2)'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(pad.l,pad.t); ctx.lineTo(pad.l+cw,pad.t); ctx.stroke();
+  ctx.setLineDash([]);
+  // Labels
+  ctx.fillStyle='#5a6275'; ctx.font='10px Space Mono'; ctx.textAlign='center';
+  days.forEach((d,i)=>ctx.fillText(d,pad.l+i/(days.length-1)*cw,h-4));
+  // Annotation
+  const ax = pad.l+3/(days.length-1)*cw+10, ay = pad.t+ch-(vals[3]/target)*ch-15;
+  ctx.fillStyle='#f5c800'; ctx.font='10px Barlow Condensed'; ctx.textAlign='left';
+  ctx.fillText('SmartBed activated Day 3 → gap closes',ax+4,ay);
+  ctx.strokeStyle='rgba(245,200,0,0.5)'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(ax,ay+3); ctx.lineTo(ax-6,ay+12); ctx.stroke();
+}
+
+const hmData = {
+  trucks:['793-11','785-04','797-01','793-02','785-12','797-03','793-08','785-07'],
+  days:['M','T','W','T','F','S','S'],
+  vals:[
+    [1,2,1,3,2,3,3],[2,1,1,2,1,0,1],[1,2,1,1,0,1,2],[2,1,2,1,2,1,1],
+    [1,1,0,1,1,2,1],[1,0,1,1,0,1,0],[1,2,1,2,1,1,2],[0,1,1,0,1,1,1]
+  ]
+};
+function buildHeatmap() {
+  const el = document.getElementById('heatmap');
+  if (!el) return;
+  const classes=['excellent','excellent','warning','poor'];
+  let html = `<div class="heatmap-header"><span class="heatmap-label" style="width:52px"></span><div class="heatmap-days">${hmData.days.map(d=>`<span class="heatmap-day-label">${d}</span>`).join('')}</div></div>`;
+  hmData.trucks.forEach((t,ti)=>{
+    html += `<div class="heatmap-row"><span class="heatmap-truck-label">${t}</span><div class="heatmap-cells">${hmData.vals[ti].map(v=>`<div class="hm-cell ${classes[v]}" title="${['Excellent','Good','Warning','Poor'][v]}"></div>`).join('')}</div></div>`;
+  });
+  html += `<div class="hm-legend"><div class="hm-legend-item"><div class="hm-legend-dot" style="background:#1a4731"></div>Excellent</div><div class="hm-legend-item"><div class="hm-legend-dot" style="background:#7c3d00"></div>Warning</div><div class="hm-legend-item"><div class="hm-legend-dot" style="background:#5c1010"></div>Poor</div></div>`;
+  el.innerHTML = html;
+}
+
+function calcROI() {
+  const fleet = +document.getElementById('roiFleet').value||100;
+  const payload = +document.getElementById('roiPayload').value||240;
+  const cb = +document.getElementById('roiCB').value||3.2;
+  const cbKg = payload*1000*(cb/100);
+  const cycles = 35;
+  const annualCycles = fleet*cycles*365;
+  const payloadRecovered = (annualCycles*cbKg/1000).toLocaleString(undefined,{maximumFractionDigits:0});
+  const fuelSaved = Math.round(annualCycles*0.65*cb/3.2).toLocaleString();
+  const savings = ((annualCycles*cbKg/1000)*46.5/1000000).toFixed(1);
+  document.getElementById('roiResults').innerHTML = `
+    <div class="roi-result-row"><div class="roi-result-label">Annual payload recovered:</div><div class="roi-result-val">${payloadRecovered} t</div></div>
+    <div class="roi-result-row"><div class="roi-result-label">Annual fuel saved:</div><div class="roi-result-val">${fuelSaved} L</div></div>
+    <div class="roi-result-row"><div class="roi-result-label">Annual savings:</div><div class="roi-result-val">$${savings}M</div></div>
+    <div class="roi-result-row"><div class="roi-result-label">Payback period:</div><div class="roi-result-val">0.0 months</div></div>
+  `;
+}
+
+function setTimeRange(btn, range) {
+  document.querySelectorAll('.toggle-opt').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+// ── SCHEDULE ──────────────────────────────────────────────────────────────────
+const schedule = [
+  {month:'APR',day:'08',truck:'CAT 793-11',task:'Bed liner inspect (FL zone)'},
+  {month:'APR',day:'10',truck:'CAT 785-07',task:'Full SmartBed calibration'},
+  {month:'APR',day:'12',truck:'CAT 797-01',task:'Vibrator motor service'},
+  {month:'APR',day:'14',truck:'CAT 793-02',task:'Camera lens clean'},
+  {month:'APR',day:'15',truck:'CAT 785-04',task:'Sensor array check'},
+  {month:'APR',day:'21',truck:'CAT 797-03',task:'Vibrator replacement'},
+];
+function buildSchedule() {
+  const el = document.getElementById('scheduleList');
+  if (!el) return;
+  el.innerHTML = schedule.map(s=>`
+    <div class="sched-item">
+      <div class="sched-date"><div class="sched-month">${s.month}</div><div class="sched-day">${s.day}</div></div>
+      <div class="sched-info"><div class="sched-truck">${s.truck}</div><div class="sched-task">${s.task}</div></div>
+      <div class="sched-check"></div>
+    </div>
+  `).join('');
+}
+
+// ── UI HELPERS ────────────────────────────────────────────────────────────────
+function toggleOpt(btn) {
+  const group = btn.closest('.toggle-group');
+  group.querySelectorAll('.toggle-opt').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function saveConfig() {
+  const btn = document.querySelector('.save-btn');
+  const orig = btn.textContent;
+  btn.textContent = 'CONFIG SAVED ✓';
+  btn.style.background = 'var(--green)';
+  setTimeout(()=>{ btn.textContent=orig; btn.style.background=''; },2000);
+}
+
+function zoneClick(zone) {
+  alert(`Zone ${zone}: Residue detected — 5.3t carry-back. Vibration sequence recommended.`);
+}
+
+function showAlert() {
+  alert('Alert: CAT 793-11 — CARRY-BACK DETECTED\nFront-Left and Rear-Left zones affected.\nAction: Vibration sequence initiated.');
+}
+
+// ── LIVE TIMER ────────────────────────────────────────────────────────────────
+let tPos = 72;
+setInterval(()=>{
+  tPos = Math.min(100, tPos + Math.random()*1.2);
+  const tf = document.getElementById('timelineFill');
+  if (tf) tf.style.width = tPos+'%';
+  if (tPos>=100) tPos = 0;
+},800);
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+buildFleet();
+buildSchedule();
+initDetail();
+
+// Start acoustic when page becomes active (pre-render issue)
+document.querySelector('[data-page="acoustic"]').addEventListener('click', ()=>setTimeout(initAcoustic,100));
+document.querySelector('[data-page="analytics"]').addEventListener('click', ()=>setTimeout(initAnalytics,100));
+</script>
+</body>
+</html>
