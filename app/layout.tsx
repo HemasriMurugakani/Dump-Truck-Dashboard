@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
-import { Barlow, Barlow_Condensed, Space_Mono } from "next/font/google";
+import { AppSessionProvider } from "@/components/auth/AuthProvider";
+import { Barlow, Barlow_Condensed, Inter, JetBrains_Mono, Space_Mono } from "next/font/google";
+import { Toaster } from "sonner";
 import "./globals.css";
 
 const barlow = Barlow({
@@ -20,6 +22,18 @@ const spaceMono = Space_Mono({
   weight: ["400", "700"],
 });
 
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-jetbrains",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "SmartBed Detection System",
   description: "SmartBed mine fleet dashboard",
@@ -32,8 +46,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${barlow.variable} ${barlowCondensed.variable} ${spaceMono.variable}`}>
-        {children}
+      <body className={`${inter.variable} ${jetbrainsMono.variable} ${barlow.variable} ${barlowCondensed.variable} ${spaceMono.variable}`}>
+        <AppSessionProvider>
+          {children}
+          <Toaster richColors closeButton position="top-right" />
+        </AppSessionProvider>
       </body>
     </html>
   );
