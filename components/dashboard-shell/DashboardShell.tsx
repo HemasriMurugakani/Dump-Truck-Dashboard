@@ -11,7 +11,7 @@ const navItems = [
   { href: "/dashboard/fleet", icon: Truck, label: "Truck Detail" },
   { href: "/dashboard/acoustic", icon: Waves, label: "Acoustic" },
   { href: "/dashboard/analytics", icon: BarChart3, label: "Analytics" },
-  { href: "/dashboard/site", icon: Star, label: "Settings" },
+  { href: "/dashboard/config", icon: Star, label: "Settings" },
   { href: "/dashboard/maintenance", icon: Shield, label: "Maintenance" },
 ];
 
@@ -91,7 +91,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
           { href: "/dashboard", icon: Grid2x2 },
           { href: "/dashboard/fleet", icon: Truck },
           { href: "/dashboard/acoustic", icon: Waves },
-          { href: "/dashboard/site", icon: SlidersHorizontal },
+          { href: "/dashboard/config", icon: SlidersHorizontal },
           { href: "/dashboard/maintenance", icon: Shield },
         ].map((item, idx) => (
           <Link key={idx} href={item.href} className="flex items-center justify-center">
