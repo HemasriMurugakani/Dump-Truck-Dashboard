@@ -1,8 +1,8 @@
 {
   "/_not-found/page": "app/_not-found/page.js",
   "/dashboard/site/page": "app/dashboard/site/page.js",
-  "/page": "app/page.js",
-  "/dashboard/maintenance/page": "app/dashboard/maintenance/page.js",
+  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
   "/dashboard/config/page": "app/dashboard/config/page.js",
-  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js"
+  "/dashboard/maintenance/page": "app/dashboard/maintenance/page.js",
+  "/page": "app/page.js"
 }
