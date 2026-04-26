@@ -1,266 +1,308 @@
 # SmartBed Detection System
 
-## 1) What This Project Is
-SmartBed is a mining fleet operations dashboard focused on reducing carry-back material and improving truck bed maintenance decisions.
+SmartBed is a web dashboard for mining fleet teams. It helps detect carry-back risk, monitor truck/sensor health, and plan maintenance before failures become expensive.
 
-The app helps teams:
-- Detect carry-back risk early
-- Monitor truck and sensor health in real time
-- Run acoustic and analytics investigations
-- Manage system configuration by role
-- Plan and execute predictive maintenance
+This README is written for two audiences:
+- Non-technical users: what the product does and how to use it day-to-day.
+- Technical users: architecture, setup, routes, roles, and quality checks.
 
-This project is designed for both:
-- Non-technical users (operators, site leaders, maintenance teams)
-- Technical users (developers, analysts, and system integrators)
+## 1) Quick Start
 
----
+### 1.1 For anyone (2-minute overview)
+1. Start the app.
+2. Sign in with a demo user.
+3. Open the Dashboard.
+4. Move to Fleet, Truck Detail, Acoustic, Analytics, Config, or Maintenance based on your role.
 
-## 2) Non-Technical Guide (Quick Understanding)
+### 1.2 For developers (terminal commands)
+```bash
+npm install
+npm run dev
+```
 
-### 2.1 Who Uses SmartBed
-- Super Admin: Full control across modules and settings
-- Site Manager: Site-wide oversight with controlled editing
-- Fleet Operator: Fleet monitoring and truck operations
-- Truck Operator: Assigned truck-focused workflow
-- Maintenance Tech: Maintenance and schedule execution
-- Analyst: Deep analysis and reporting workflows
+Validation commands:
+```bash
+npm run lint
+npm run build
+```
 
-### 2.2 What You Can Do
-- View fleet status and alerts
-- Open detailed truck diagnostics
-- Analyze acoustic behavior for anomaly patterns
-- Review analytics, trends, and operational KPIs
-- Configure system thresholds and notifications (role dependent)
-- Plan maintenance tasks with wear forecasting and workload views
+## 2) What Problem This Solves
 
-### 2.3 Main Pages in Simple Terms
-- Dashboard: Role landing and quick high-level status
-- Fleet: See all trucks and drill down into each one
-- Truck Detail: Per-truck telemetry and control context
-- Acoustic: Signal and vibration analysis lab
-- Analytics: KPI reports, trends, and export workflows
-- Config: Sensor and alert settings with role-aware restrictions
-- Maintenance: Wear map, alerts, schedule, history, and predictive insights
+Mining trucks often lose efficiency due to material carry-back, wear in truck beds, and delayed maintenance decisions.
 
----
+SmartBed helps teams:
+- Detect risk signals earlier.
+- Understand fleet condition in one place.
+- Investigate anomalies through acoustic and trend analysis.
+- Configure thresholds and alerts by role.
+- Plan predictive maintenance with better timing.
 
-## 3) Technical Guide
+## 3) Non-Technical User Guide
 
-## 3.1 Stack
+### 3.1 Who uses SmartBed
+- Super Admin: full system control.
+- Site Manager: site-level oversight and controlled updates.
+- Fleet Operator: fleet monitoring and truck-level operations.
+- Truck Operator: assigned truck workflow.
+- Maintenance Tech: maintenance planning and execution.
+- Analyst: reporting, KPI interpretation, and trend insights.
+
+### 3.2 Main pages in simple language
+- Dashboard: your home screen and high-level status.
+- Fleet: all trucks at once, with quick health signals.
+- Truck Detail: one truck, deeper telemetry and condition view.
+- Acoustic: signal-based anomaly investigation.
+- Analytics: performance trends and reporting views.
+- Config: thresholds, notification settings, and device-related controls.
+- Maintenance: alerts, schedules, wear projections, and history.
+
+### 3.3 Typical daily workflow
+1. Open Dashboard for urgent alerts.
+2. Check Fleet for priority trucks.
+3. Open Truck Detail for specific investigation.
+4. Use Acoustic/Analytics for confirmation and trends.
+5. Plan actions in Maintenance.
+6. Update Config only if your role allows it.
+
+### 3.4 What each role should expect
+- Some pages or actions are intentionally limited by role.
+- This is not an error; it is a safety and governance control.
+- If access is denied, use an account with the required permission level.
+
+## 4) Demo Accounts
+
+Source: `lib/mockData.ts`
+
+Password for all users:
+- `Password123!`
+
+Accounts:
+- `super.admin@smartbed.ai` | `SUPER_ADMIN` | site alpha
+- `site.manager@smartbed.ai` | `SITE_MANAGER` | site alpha
+- `fleet.operator@smartbed.ai` | `FLEET_OPERATOR` | site alpha
+- `truck.operator@smartbed.ai` | `TRUCK_OPERATOR` | site alpha | assigned truck `793-11`
+- `maintenance.tech@smartbed.ai` | `MAINTENANCE_TECH` | site beta
+- `analyst@smartbed.ai` | `ANALYST` | site gamma
+
+## 5) Technical Overview
+
+### 5.1 Stack
 - Next.js 14 (App Router)
-- TypeScript
+- TypeScript (strict mode)
 - Tailwind CSS
-- NextAuth (Credentials provider)
-- Recharts (visual analytics)
+- NextAuth (credentials provider)
+- Recharts (charts)
 - Sonner (toasts)
-- Lucide icons
+- Lucide React (icons)
 - jsPDF (report export)
+- Zustand (UI state)
 
-## 3.2 Project Structure
-- app: Next.js routes
-- components: Feature components and shared UI
-- lib: Mock data, auth logic, route mapping, permissions
-- store: UI state store
-- types: Shared TypeScript types
-- backend: Reserved workspace folder for backend-related extensions
+### 5.2 Directory map
+- `app/`: route entry points and page-level wrappers.
+- `components/`: feature modules and reusable UI.
+- `lib/`: auth utilities, route/permission mapping, mock data.
+- `store/`: application UI state.
+- `types/`: shared type contracts.
+- `backend/`: reserved backend workspace area.
 
-## 3.3 Auth and Role Model
-Authentication uses Credentials provider with seeded users from lib/mockData.ts.
+### 5.3 Routing and page entry points
+- `/dashboard`
+- `/dashboard/fleet`
+- `/dashboard/truck/[truckId]`
+- `/dashboard/acoustic`
+- `/dashboard/analytics`
+- `/dashboard/config`
+- `/dashboard/maintenance`
 
-Role permissions are enforced via:
-- Protected shell wrapping route pages
-- Route role checks and redirects
-- In-page action-level restrictions for sensitive operations
+Additional high-level routes:
+- `/legacy`
+- `/platform`
 
----
+### 5.4 Access control model
+Permissions are enforced at multiple levels:
+- Route-level role checks and redirects.
+- Protected shell wrappers around pages.
+- Action-level restrictions inside pages (read-only vs editable operations).
 
-## 4) Local Setup
+### 5.5 Architecture diagrams
 
-## 4.1 Requirements
+The diagrams below summarize how the app is organized and how access is checked.
+
+```mermaid
+flowchart LR
+	U[User] --> A[NextAuth Login]
+	A --> R[Role Resolution]
+	R --> S[Protected Shell]
+	S --> D[Dashboard]
+	S --> F[Fleet]
+	S --> T[Truck Detail]
+	S --> C[Config]
+	S --> M[Maintenance]
+	S --> X[Acoustic]
+	S --> N[Analytics]
+
+	D --> P1[Route-level checks]
+	F --> P1
+	T --> P1
+	C --> P1
+	M --> P1
+	X --> P1
+	N --> P1
+```
+
+```mermaid
+flowchart TD
+	Login[User signs in] --> Role{User role?}
+	Role -->|Allowed| Page[Open page]
+	Role -->|Not allowed| Redirect[Redirect to authorized route]
+
+	Page --> Action{Sensitive action?}
+	Action -->|No| View[Read-only view]
+	Action -->|Yes| Check{Permission granted?}
+	Check -->|Yes| Edit[Allow change]
+	Check -->|No| Block[Show access denied]
+```
+
+## 6) Route Access Summary
+
+- `/dashboard`: role-aware landing.
+- `/dashboard/fleet`: `FLEET_OPERATOR`, `SITE_MANAGER`, `SUPER_ADMIN`, `TRUCK_OPERATOR`, `ANALYST`.
+- `/dashboard/truck/[truckId]`: role-guarded; `TRUCK_OPERATOR` limited to assigned truck.
+- `/dashboard/acoustic`: role-gated diagnostics.
+- `/dashboard/analytics`: reporting and KPI workflows.
+- `/dashboard/config`: `SUPER_ADMIN`, `MAINTENANCE_TECH`, `SITE_MANAGER` with role-dependent edit scope.
+- `/dashboard/maintenance`: `MAINTENANCE_TECH`, `SUPER_ADMIN`, `SITE_MANAGER` (schedule editing currently centered on maintenance tech workflow).
+
+## 7) Feature Details
+
+### 7.1 Configuration module
+- Truck selector and model context.
+- Sensor/control settings (load-cell, acoustic, camera, vibrator).
+- Alert thresholds and recipients.
+- Notification channels and webhook setup.
+- Save scope by role (truck/model/fleet context).
+- Calibration wizard and hardware topology interactions.
+
+### 7.2 Maintenance module
+- Alert panel with severity filters.
+- Bed wear visualization and trend projections.
+- Replacement horizon and cost-related summary.
+- Schedule and inventory views.
+- Technician workload visualization.
+- Maintenance history filters (truck/type/date/search).
+- Predictive insights with confidence and recommended action.
+
+### 7.3 Analytics and acoustic modules
+- Trend analysis and KPI charts.
+- Acoustic anomaly exploration for deeper incident investigation.
+- Reporting-oriented views for analyst and operations workflows.
+
+## 8) Data Model and Simulation Notes
+
+The current implementation uses mock and generated data for deterministic local behavior.
+
+Why this is useful:
+- Reliable local demos.
+- Fast UI iteration.
+- No mandatory backend dependency for core UI validation.
+
+When integrating real services:
+1. Replace mock providers in feature modules.
+2. Keep route and permission guards intact.
+3. Preserve existing TypeScript contracts in shared types.
+
+## 9) Setup and Run
+
+### 9.1 Requirements
 - Node.js 18+
 - npm 9+
-- macOS, Linux, or Windows with modern terminal
+- macOS, Linux, or Windows
 
-## 4.2 Install
-1. Open terminal in project root
-2. Run npm install
+### 9.2 Install dependencies
+```bash
+npm install
+```
 
-## 4.3 Run
-- Development: npm run dev
-- Production build: npm run build
-- Production start: npm run start
-- Lint: npm run lint
+### 9.3 Development mode
+```bash
+npm run dev
+```
 
----
+### 9.4 Production build and start
+```bash
+npm run build
+npm run start
+```
 
-## 5) Login Credentials (Seeded Demo Users)
-Source: lib/mockData.ts
+### 9.5 Linting
+```bash
+npm run lint
+```
 
-Password for all users: Password123!
+## 10) Quality Status
 
-- super.admin@smartbed.ai | SUPER_ADMIN | site alpha
-- site.manager@smartbed.ai | SITE_MANAGER | site alpha
-- fleet.operator@smartbed.ai | FLEET_OPERATOR | site alpha
-- truck.operator@smartbed.ai | TRUCK_OPERATOR | site alpha | assigned truck 793-11
-- maintenance.tech@smartbed.ai | MAINTENANCE_TECH | site beta
-- analyst@smartbed.ai | ANALYST | site gamma
+As of 26 April 2026:
+- `npm run lint` passes.
+- `npm run build` passes.
+- No current compile/type errors were detected across pages.
 
----
+## 11) Troubleshooting
 
-## 6) Routes and Access Matrix
-
-- /dashboard
-  - Role-aware landing experience
-
-- /dashboard/fleet
-  - Roles: FLEET_OPERATOR, SITE_MANAGER, SUPER_ADMIN, TRUCK_OPERATOR, ANALYST
-
-- /dashboard/truck/[truckId]
-  - Route-guarded; TRUCK_OPERATOR is restricted to assigned truck
-
-- /dashboard/acoustic
-  - Role-gated and feature-rich acoustic diagnostics
-
-- /dashboard/analytics
-  - KPI and advanced reporting workflows
-
-- /dashboard/config
-  - Roles: SUPER_ADMIN, MAINTENANCE_TECH, SITE_MANAGER
-  - Edit scope is role-aware (full versus limited)
-
-- /dashboard/maintenance
-  - Roles: MAINTENANCE_TECH, SUPER_ADMIN, SITE_MANAGER
-  - Schedule edit actions allowed for MAINTENANCE_TECH only
-  - SITE_MANAGER and SUPER_ADMIN can use read-only schedule mode unless explicitly expanded later
-
----
-
-## 7) Feature Module Details
-
-## 7.1 Config Module
-- Truck selector and model-aware context
-- Load-cell, acoustic, camera, vibrator settings
-- Alert thresholds and recipients
-- Notification channels and webhook
-- Save scope: truck, model, fleet (role-conditioned)
-- Calibration wizard
-- Hardware topology interaction
-- Edge model metrics and role-gated retraining action
-
-## 7.2 Maintenance Module
-- Three-panel layout:
-  - Left: Maintenance alerts with severity filters and counts
-  - Center: Bed wear visualization, trend projections, replacement projection, cost summary
-  - Right: Schedule, inventory status, technician workload donut
-- Maintenance history tab:
-  - Filters by truck, type, date range
-  - Search support
-- Predictive insights panel:
-  - Confidence level
-  - Affected trucks
-  - Recommended action
-  - Dismiss interaction
-
----
-
-## 8) Data and Simulation Notes
-
-This project currently uses deterministic/semi-deterministic mock data from lib/mockData.ts and local generated values for dynamic charts.
-
-Benefits:
-- Fast local development
-- Reproducible demos
-- No external API dependency for core UI testing
-
-When connecting real backend services:
-- Replace mock providers in feature components
-- Keep route and role guards unchanged
-- Preserve type contracts from types and lib
-
----
-
-## 9) Quality and Validation
-
-Current baseline validation command sequence:
-1. npm run lint
-2. npm run build
-
-These checks ensure:
-- Type safety
-- Route/component compile validity
-- App Router build stability
-
----
-
-## 10) Troubleshooting
-
-## 10.1 Dev server chunk or hot-reload errors
+### 11.1 Hot reload/chunk issues during development
 Symptoms:
-- Missing chunk module
-- Random 500 during navigation
-- CSS or fallback chunk load failures
+- Missing chunk errors.
+- Random route 500s.
 
 Fix:
-1. Stop dev server
-2. Remove build cache folder: .next
-3. Restart with npm run dev
+1. Stop the dev server.
+2. Remove `.next` cache directory.
+3. Restart with `npm run dev`.
 
-## 10.2 Port mismatch with auth callbacks
-If sign-out or auth flow is inconsistent across ports:
-- Use a single consistent dev port
-- Prefer localhost:3001 in this project flow when actively switching users across routes
+### 11.2 Authentication callback confusion on changing ports
+If auth looks inconsistent:
+- Keep one dev port consistent during a session.
+- Clear stale cookies/session and sign in again.
 
-## 10.3 Route access denied
-Expected behavior can occur if role is not allowed for a route.
+### 11.3 Access denied on route or action
+Expected in role-restricted flows.
+
 Check:
-- Allowed roles in route page wrapper
-- Redirect logic and role mapping in route guards
+- Role assigned to your user account.
+- Allowed roles in route wrappers.
+- Action-level permission checks in page components.
 
----
+## 12) Security Notes (Before Real Production)
 
-## 11) Recommended Developer Workflow
+- Replace demo credentials with a real identity provider.
+- Use secure environment variables for secrets.
+- Add server-side authorization for all write operations.
+- Add request validation and rate limiting on mutable endpoints.
+- Add audit logging for configuration and maintenance changes.
 
-1. Pull latest changes
-2. Install dependencies
-3. Run lint and build first
-4. Start dev server
-5. Verify role-specific flows using seeded users
-6. Before merging:
-   - Run lint
-   - Run build
-   - Spot-check key routes (fleet, truck detail, acoustic, analytics, config, maintenance)
+## 13) Recommended Team Workflow
 
----
+1. Pull latest changes.
+2. Install dependencies.
+3. Run `npm run lint` and `npm run build`.
+4. Start dev server and validate role-based flows using demo users.
+5. Spot-check key modules: Fleet, Truck Detail, Acoustic, Analytics, Config, Maintenance.
 
-## 12) Security and Production Notes
+## 14) Known Scope and Future Improvements
 
-For production hardening:
-- Replace local auth seed data with secure identity provider
-- Store secrets only in secure environment management
-- Add API authorization checks server-side for every mutation
-- Add auditing for config and maintenance actions
-- Add rate limits and input validation for all write endpoints
+Current scope:
+- Frontend-heavy implementation with role-aware navigation and workflows.
+- Strong support for demos and feature exploration.
 
----
+Good next steps:
+- Connect telemetry and maintenance APIs.
+- Persist schedules/history to backend storage.
+- Add unit/integration tests for critical role-sensitive logic.
+- Add observability for auth, redirects, and page/action latency.
 
-## 13) Future Enhancements
+## 15) Glossary (Simple Terms)
 
-- Integrate real telemetry ingest pipelines
-- Persist maintenance task states to backend
-- Add background jobs for wear forecast refresh
-- Add unit and integration tests for critical role-based flows
-- Add observability dashboards for auth, route redirects, and action latency
-
----
-
-## 14) Current Status Summary
-
-- Core modules are implemented and route-wired
-- Role-based route and action gating is active
-- Maintenance module includes predictive analytics and scheduling workflows
-- Project currently builds and lints cleanly
-
-If you are a non-technical user: open the app, sign in with your role, and start from the route that matches your workflow.
-
-If you are a technical user: start with sections 3 through 11 and use the seeded accounts to validate role behavior quickly.
+- Carry-back: leftover material staying in truck bed after unload.
+- Telemetry: live machine/sensor data.
+- Predictive maintenance: servicing equipment before failure based on data patterns.
+- Role-based access: features available depending on user role.
+- KPI: key performance indicator used to track operational performance.
