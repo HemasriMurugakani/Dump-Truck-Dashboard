@@ -70,6 +70,143 @@ export const MINE_SITES: SiteContext[] = [
   { id: "gamma", name: "Mine Site Gamma", location: "West Basin", activeShift: 3, zoneName: "Pit D" },
 ];
 
+// Global site data with map coordinates for global dashboard
+export type GlobalSiteData = SiteContext & {
+  lat: number;
+  lng: number;
+  trucksCount: number;
+  avgCarryBackPct: number;
+  alertCount: number;
+  alertSeverity: "OK" | "WARNING" | "CRITICAL";
+  status: "OPERATIONAL" | "DEGRADED" | "OFFLINE";
+};
+
+export const GLOBAL_SITES: GlobalSiteData[] = [
+  {
+    id: "alpha",
+    name: "Mine Site Alpha",
+    location: "Eastern Operations",
+    activeShift: 2,
+    zoneName: "Pit A",
+    lat: 40.7128,
+    lng: -74.006,
+    trucksCount: 3,
+    avgCarryBackPct: 1.1,
+    alertCount: 2,
+    alertSeverity: "WARNING",
+    status: "OPERATIONAL",
+  },
+  {
+    id: "beta",
+    name: "Mine Site Beta",
+    location: "Northern Ridge",
+    activeShift: 1,
+    zoneName: "Pit C",
+    lat: 41.8781,
+    lng: -87.6298,
+    trucksCount: 3,
+    avgCarryBackPct: 0.5,
+    alertCount: 0,
+    alertSeverity: "OK",
+    status: "OPERATIONAL",
+  },
+  {
+    id: "gamma",
+    name: "Mine Site Gamma",
+    location: "West Basin",
+    activeShift: 3,
+    zoneName: "Pit D",
+    lat: 34.0522,
+    lng: -118.2437,
+    trucksCount: 2,
+    avgCarryBackPct: 0.7,
+    alertCount: 1,
+    alertSeverity: "WARNING",
+    status: "OPERATIONAL",
+  },
+];
+
+// Global user management data
+export type GlobalUser = {
+  id: string;
+  name: string;
+  email: string;
+  role: UserRole;
+  site: string;
+  lastLogin: string;
+  status: "ACTIVE" | "INACTIVE";
+  lastPasswordChange: string;
+};
+
+export const GLOBAL_USERS: GlobalUser[] = [
+  { id: "u1", name: "A. Morgan", email: "super.admin@smartbed.ai", role: "SUPER_ADMIN", site: "—", lastLogin: new Date(Date.now() - 0.5 * 60_000).toISOString(), status: "ACTIVE", lastPasswordChange: new Date(Date.now() - 90 * 24 * 60_000).toISOString() },
+  { id: "u2", name: "R. Cooper", email: "site.manager@smartbed.ai", role: "SITE_MANAGER", site: "Alpha", lastLogin: new Date(Date.now() - 15 * 60_000).toISOString(), status: "ACTIVE", lastPasswordChange: new Date(Date.now() - 45 * 24 * 60_000).toISOString() },
+  { id: "u3", name: "J. Ramesh", email: "fleet.operator@smartbed.ai", role: "FLEET_OPERATOR", site: "Alpha", lastLogin: new Date(Date.now() - 45 * 60_000).toISOString(), status: "ACTIVE", lastPasswordChange: new Date(Date.now() - 30 * 24 * 60_000).toISOString() },
+  { id: "u4", name: "M. Singh", email: "truck.operator@smartbed.ai", role: "TRUCK_OPERATOR", site: "Alpha", lastLogin: new Date(Date.now() - 120 * 60_000).toISOString(), status: "ACTIVE", lastPasswordChange: new Date(Date.now() - 60 * 24 * 60_000).toISOString() },
+  { id: "u5", name: "P. Sharma", email: "maintenance.tech@smartbed.ai", role: "MAINTENANCE_TECH", site: "Beta", lastLogin: new Date(Date.now() - 180 * 60_000).toISOString(), status: "ACTIVE", lastPasswordChange: new Date(Date.now() - 20 * 24 * 60_000).toISOString() },
+  { id: "u6", name: "L. Nair", email: "analyst@smartbed.ai", role: "ANALYST", site: "Gamma", lastLogin: new Date(Date.now() - 240 * 60_000).toISOString(), status: "ACTIVE", lastPasswordChange: new Date(Date.now() - 75 * 24 * 60_000).toISOString() },
+  { id: "u7", name: "V. Chen", email: "site.manager.beta@smartbed.ai", role: "SITE_MANAGER", site: "Beta", lastLogin: new Date(Date.now() - 30 * 60_000).toISOString(), status: "ACTIVE", lastPasswordChange: new Date(Date.now() - 40 * 24 * 60_000).toISOString() },
+  { id: "u8", name: "K. Okonkwo", email: "site.manager.gamma@smartbed.ai", role: "SITE_MANAGER", site: "Gamma", lastLogin: new Date(Date.now() - 2 * 60_000).toISOString(), status: "ACTIVE", lastPasswordChange: new Date(Date.now() - 55 * 24 * 60_000).toISOString() },
+];
+
+// System health data
+export type SystemHealthData = {
+  totalJetsons: number;
+  onlineJetsons: number;
+  totalMcus: number;
+  onlineMcus: number;
+  avgInferenceTime: number;
+  devicesNeedingUpdate: number;
+  modelVersion: string;
+};
+
+export const SYSTEM_HEALTH: SystemHealthData = {
+  totalJetsons: 8,
+  onlineJetsons: 8,
+  totalMcus: 16,
+  onlineMcus: 15,
+  avgInferenceTime: 187,
+  devicesNeedingUpdate: 2,
+  modelVersion: "2.4.1",
+};
+
+// Multi-site comparison data
+export type SiteComparisonData = {
+  siteId: string;
+  siteName: string;
+  fleetSize: number;
+  avgCarryBackPct: number;
+  payloadEfficiency: number;
+  fuelSaved: number;
+  alertCount: number;
+  status: string;
+};
+
+export const SITE_COMPARISON: SiteComparisonData[] = [
+  { siteId: "alpha", siteName: "Site Alpha", fleetSize: 3, avgCarryBackPct: 1.1, payloadEfficiency: 88.9, fuelSaved: 4200, alertCount: 2, status: "OPERATIONAL" },
+  { siteId: "beta", siteName: "Site Beta", fleetSize: 3, avgCarryBackPct: 0.5, payloadEfficiency: 99.5, fuelSaved: 6800, alertCount: 0, status: "OPERATIONAL" },
+  { siteId: "gamma", siteName: "Site Gamma", fleetSize: 2, avgCarryBackPct: 0.7, payloadEfficiency: 99.3, fuelSaved: 4100, alertCount: 1, status: "OPERATIONAL" },
+];
+
+// Global user audit log
+export type AuditLogEntry = {
+  id: string;
+  timestamp: string;
+  action: string;
+  userId: string;
+  userName: string;
+  targetUser?: string;
+  details: string;
+};
+
+export const AUDIT_LOG: AuditLogEntry[] = [
+  { id: "log-1", timestamp: new Date(Date.now() - 10 * 60_000).toISOString(), action: "ROLE_CHANGE", userId: "u1", userName: "A. Morgan", targetUser: "u5", details: "Changed P. Sharma from ANALYST to MAINTENANCE_TECH at Beta site" },
+  { id: "log-2", timestamp: new Date(Date.now() - 45 * 60_000).toISOString(), action: "USER_CREATED", userId: "u1", userName: "A. Morgan", targetUser: "u9", details: "Created new FLEET_OPERATOR user V. Desai at Alpha site" },
+  { id: "log-3", timestamp: new Date(Date.now() - 120 * 60_000).toISOString(), action: "USER_DEACTIVATED", userId: "u1", userName: "A. Morgan", targetUser: "u3", details: "Deactivated J. Ramesh (FLEET_OPERATOR)" },
+  { id: "log-4", timestamp: new Date(Date.now() - 240 * 60_000).toISOString(), action: "PASSWORD_RESET", userId: "u1", userName: "A. Morgan", targetUser: "u2", details: "Reset password for R. Cooper" },
+  { id: "log-5", timestamp: new Date(Date.now() - 480 * 60_000).toISOString(), action: "ROLE_CHANGE", userId: "u1", userName: "A. Morgan", targetUser: "u6", details: "Changed L. Nair from MAINTENANCE_TECH to ANALYST at Gamma site" },
+];
+
 export const AUTH_USERS: AuthSeedUser[] = [
   { id: "u1", name: "A. Morgan", email: "super.admin@smartbed.ai", password: "Password123!", role: "SUPER_ADMIN", siteId: "alpha" },
   { id: "u2", name: "R. Cooper", email: "site.manager@smartbed.ai", password: "Password123!", role: "SITE_MANAGER", siteId: "alpha" },

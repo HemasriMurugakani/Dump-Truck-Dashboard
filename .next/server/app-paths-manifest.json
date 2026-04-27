@@ -1,10 +1,8 @@
 {
-  "/dashboard/site/page": "app/dashboard/site/page.js",
-  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/page": "app/page.js",
   "/dashboard/page": "app/dashboard/page.js",
-  "/dashboard/acoustic/page": "app/dashboard/acoustic/page.js",
-  "/dashboard/analytics/page": "app/dashboard/analytics/page.js",
-  "/dashboard/config/page": "app/dashboard/config/page.js",
-  "/dashboard/maintenance/page": "app/dashboard/maintenance/page.js",
+  "/dashboard/global/page": "app/dashboard/global/page.js",
+  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
   "/dashboard/fleet/page": "app/dashboard/fleet/page.js"
 }
