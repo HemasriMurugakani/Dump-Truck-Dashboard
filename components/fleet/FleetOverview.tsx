@@ -204,7 +204,7 @@ export function FleetOverview() {
   const singleTruckMode = user.role === "TRUCK_OPERATOR";
 
   return (
-    <section className="space-y-4">
+    <section className="space-y-3">
       {analystReadOnly && (
         <div className="rounded-lg border border-[#1F2937] bg-[#0F172A] px-4 py-3 text-sm text-[#93C5FD]">
           Read-only mode: controls are disabled for analyst role.
@@ -212,7 +212,7 @@ export function FleetOverview() {
       )}
 
       {summary && (
-        <div className="rounded-lg border border-[#1F1F1F] bg-[#111111] px-4 py-3 text-xs md:text-sm flex flex-wrap gap-x-4 gap-y-2">
+        <div className="rounded-md border border-[#1B1E22] bg-[#090B0E] px-3 py-2 text-xs flex flex-wrap gap-x-4 gap-y-2">
           <span>Total Active: <b className="tabular-nums">{summary.active}</b></span>
           <span>Carry-Back Alerts: <b className="text-[#EF4444] tabular-nums">{summary.carryBack}</b></span>
           <span>Avg CB Rate: <b className="tabular-nums">{summary.avgCb.toFixed(1)}%</b></span>
@@ -221,16 +221,16 @@ export function FleetOverview() {
         </div>
       )}
 
-      <div className="rounded-lg border border-[#1F1F1F] bg-[#111111] p-4">
+      <div className="rounded-md border border-[#1B1E22] bg-[#090B0E] p-3">
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-          <div className="flex items-center gap-2 text-[#9CA3AF] text-sm">
+          <div className="flex items-center gap-2 text-[#9CA3AF] text-xs uppercase tracking-wide">
             <SlidersHorizontal className="h-4 w-4" />
             <span>Fleet Controls</span>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-2 w-full lg:w-auto">
             <select
-              className="h-9 rounded-md border border-[#2A2A2A] bg-[#0F0F0F] px-3 text-sm disabled:opacity-50"
+              className="h-8 rounded-md border border-[#252932] bg-[#0E1116] px-3 text-xs disabled:opacity-50"
               value={filter}
               onChange={(e) => setFilter(e.target.value as FleetFilter)}
               disabled={analystReadOnly}
@@ -243,7 +243,7 @@ export function FleetOverview() {
             </select>
 
             <select
-              className="h-9 rounded-md border border-[#2A2A2A] bg-[#0F0F0F] px-3 text-sm disabled:opacity-50"
+              className="h-8 rounded-md border border-[#252932] bg-[#0E1116] px-3 text-xs disabled:opacity-50"
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as SortBy)}
               disabled={analystReadOnly}
@@ -254,17 +254,17 @@ export function FleetOverview() {
               <option value="LAST_ALERT">By Last Alert</option>
             </select>
 
-            <label className="h-9 rounded-md border border-[#2A2A2A] bg-[#0F0F0F] px-3 flex items-center gap-2">
+            <label className="h-8 rounded-md border border-[#252932] bg-[#0E1116] px-3 flex items-center gap-2">
               <Search className="h-4 w-4 text-[#6B7280]" />
               <input
-                className="w-full bg-transparent text-sm outline-none"
+                className="w-full bg-transparent text-xs outline-none"
                 placeholder="Search truck or operator"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
             </label>
 
-            <label className="h-9 rounded-md border border-[#2A2A2A] bg-[#0F0F0F] px-3 text-sm flex items-center justify-between disabled:opacity-50">
+            <label className="h-8 rounded-md border border-[#252932] bg-[#0E1116] px-3 text-xs flex items-center justify-between disabled:opacity-50">
               <span>Compact View</span>
               <input
                 type="checkbox"

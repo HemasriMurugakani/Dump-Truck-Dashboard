@@ -1,6 +1,6 @@
-/*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[2].use[1]!./node_modules/next/dist/build/webpack/loaders/next-font-loader/index.js??ruleSet[1].rules[13].oneOf[2].use[2]!./node_modules/next/font/google/target.css?{"path":"app/layout.tsx","import":"Barlow","arguments":[{"subsets":["latin"],"variable":"--font-barlow","weight":["300","400","500","600"]}],"variableName":"barlow"} ***!
-  \********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*!*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[2].use[1]!./node_modules/next/dist/build/webpack/loaders/next-font-loader/index.js??ruleSet[1].rules[13].oneOf[2].use[2]!./node_modules/next/font/google/target.css?{"path":"app\\layout.tsx","import":"Barlow","arguments":[{"subsets":["latin"],"variable":"--font-barlow","weight":["300","400","500","600"]}],"variableName":"barlow"} ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /* vietnamese */
 @font-face {
   font-family: '__Barlow_b35023';
@@ -113,9 +113,9 @@
 }.__variable_b35023 {--font-barlow: '__Barlow_b35023', '__Barlow_Fallback_b35023'
 }
 
-/*!*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[2].use[1]!./node_modules/next/dist/build/webpack/loaders/next-font-loader/index.js??ruleSet[1].rules[13].oneOf[2].use[2]!./node_modules/next/font/google/target.css?{"path":"app/layout.tsx","import":"Barlow_Condensed","arguments":[{"subsets":["latin"],"variable":"--font-barlow-condensed","weight":["400","600","700","800"]}],"variableName":"barlowCondensed"} ***!
-  \*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*!**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[2].use[1]!./node_modules/next/dist/build/webpack/loaders/next-font-loader/index.js??ruleSet[1].rules[13].oneOf[2].use[2]!./node_modules/next/font/google/target.css?{"path":"app\\layout.tsx","import":"Barlow_Condensed","arguments":[{"subsets":["latin"],"variable":"--font-barlow-condensed","weight":["400","600","700","800"]}],"variableName":"barlowCondensed"} ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /* vietnamese */
 @font-face {
   font-family: '__Barlow_Condensed_385118';
@@ -228,9 +228,9 @@
 }.__variable_385118 {--font-barlow-condensed: '__Barlow_Condensed_385118', '__Barlow_Condensed_Fallback_385118'
 }
 
-/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[2].use[1]!./node_modules/next/dist/build/webpack/loaders/next-font-loader/index.js??ruleSet[1].rules[13].oneOf[2].use[2]!./node_modules/next/font/google/target.css?{"path":"app/layout.tsx","import":"Space_Mono","arguments":[{"subsets":["latin"],"variable":"--font-space-mono","weight":["400","700"]}],"variableName":"spaceMono"} ***!
-  \*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[2].use[1]!./node_modules/next/dist/build/webpack/loaders/next-font-loader/index.js??ruleSet[1].rules[13].oneOf[2].use[2]!./node_modules/next/font/google/target.css?{"path":"app\\layout.tsx","import":"Space_Mono","arguments":[{"subsets":["latin"],"variable":"--font-space-mono","weight":["400","700"]}],"variableName":"spaceMono"} ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /* vietnamese */
 @font-face {
   font-family: '__Space_Mono_e8b655';
@@ -289,9 +289,9 @@
 }.__variable_e8b655 {--font-space-mono: '__Space_Mono_e8b655', '__Space_Mono_Fallback_e8b655'
 }
 
-/*!***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[2].use[1]!./node_modules/next/dist/build/webpack/loaders/next-font-loader/index.js??ruleSet[1].rules[13].oneOf[2].use[2]!./node_modules/next/font/google/target.css?{"path":"app/layout.tsx","import":"Inter","arguments":[{"subsets":["latin"],"variable":"--font-inter","display":"swap"}],"variableName":"inter"} ***!
-  \***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*!************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[2].use[1]!./node_modules/next/dist/build/webpack/loaders/next-font-loader/index.js??ruleSet[1].rules[13].oneOf[2].use[2]!./node_modules/next/font/google/target.css?{"path":"app\\layout.tsx","import":"Inter","arguments":[{"subsets":["latin"],"variable":"--font-inter","display":"swap"}],"variableName":"inter"} ***!
+  \************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /* cyrillic-ext */
 @font-face {
   font-family: '__Inter_f367f3';
@@ -359,9 +359,9 @@
 }.__variable_f367f3 {--font-inter: '__Inter_f367f3', '__Inter_Fallback_f367f3'
 }
 
-/*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[2].use[1]!./node_modules/next/dist/build/webpack/loaders/next-font-loader/index.js??ruleSet[1].rules[13].oneOf[2].use[2]!./node_modules/next/font/google/target.css?{"path":"app/layout.tsx","import":"JetBrains_Mono","arguments":[{"subsets":["latin"],"variable":"--font-jetbrains","display":"swap"}],"variableName":"jetbrainsMono"} ***!
-  \********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*!*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[2].use[1]!./node_modules/next/dist/build/webpack/loaders/next-font-loader/index.js??ruleSet[1].rules[13].oneOf[2].use[2]!./node_modules/next/font/google/target.css?{"path":"app\\layout.tsx","import":"JetBrains_Mono","arguments":[{"subsets":["latin"],"variable":"--font-jetbrains","display":"swap"}],"variableName":"jetbrainsMono"} ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /* cyrillic-ext */
 @font-face {
   font-family: '__JetBrains_Mono_3c557b';
@@ -461,7 +461,7 @@ html,
   -moz-tab-size: 4; /* 3 */
   -o-tab-size: 4;
      tab-size: 4; /* 3 */
-  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; /* 4 */
+  font-family: var(--font-inter), var(--font-barlow), sans-serif; /* 4 */
   font-feature-settings: normal; /* 5 */
   font-variation-settings: normal; /* 6 */
   -webkit-tap-highlight-color: transparent; /* 7 */
@@ -541,7 +541,7 @@ code,
 kbd,
 samp,
 pre {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; /* 1 */
+  font-family: var(--font-jetbrains), var(--font-space-mono), monospace; /* 1 */
   font-feature-settings: normal; /* 2 */
   font-variation-settings: normal; /* 3 */
   font-size: 1em; /* 4 */
@@ -953,14 +953,8 @@ video {
 .-top-1 {
   top: -0.25rem;
 }
-.bottom-0 {
-  bottom: 0px;
-}
 .bottom-2 {
   bottom: 0.5rem;
-}
-.bottom-4 {
-  bottom: 1rem;
 }
 .left-0 {
   left: 0px;
@@ -974,8 +968,8 @@ video {
 .left-4 {
   left: 1rem;
 }
-.right-0 {
-  right: 0px;
+.left-\[60px\] {
+  left: 60px;
 }
 .right-2 {
   right: 0.5rem;
@@ -1061,8 +1055,14 @@ video {
 .mt-4 {
   margin-top: 1rem;
 }
+.mt-5 {
+  margin-top: 1.25rem;
+}
 .mt-6 {
   margin-top: 1.5rem;
+}
+.mt-auto {
+  margin-top: auto;
 }
 .block {
   display: block;
@@ -1082,17 +1082,20 @@ video {
 .hidden {
   display: none;
 }
+.h-1\.5 {
+  height: 0.375rem;
+}
 .h-10 {
   height: 2.5rem;
+}
+.h-11 {
+  height: 2.75rem;
 }
 .h-12 {
   height: 3rem;
 }
 .h-14 {
   height: 3.5rem;
-}
-.h-16 {
-  height: 4rem;
 }
 .h-2 {
   height: 0.5rem;
@@ -1124,14 +1127,17 @@ video {
 .h-9 {
   height: 2.25rem;
 }
-.h-\[120px\] {
-  height: 120px;
+.h-\[126px\] {
+  height: 126px;
 }
 .h-\[140px\] {
   height: 140px;
 }
 .h-\[170px\] {
   height: 170px;
+}
+.h-\[18px\] {
+  height: 18px;
 }
 .h-\[190px\] {
   height: 190px;
@@ -1238,11 +1244,23 @@ video {
 .w-8 {
   width: 2rem;
 }
+.w-9 {
+  width: 2.25rem;
+}
 .w-\[120px\] {
   width: 120px;
 }
+.w-\[18px\] {
+  width: 18px;
+}
+.w-\[280px\] {
+  width: 280px;
+}
 .w-\[300px\] {
   width: 300px;
+}
+.w-\[56px\] {
+  width: 56px;
 }
 .w-\[78px\] {
   width: 78px;
@@ -1265,8 +1283,8 @@ video {
 .max-w-\[200px\] {
   max-width: 200px;
 }
-.max-w-\[280px\] {
-  max-width: 280px;
+.max-w-\[320px\] {
+  max-width: 320px;
 }
 .max-w-\[520px\] {
   max-width: 520px;
@@ -1291,6 +1309,9 @@ video {
 }
 .flex-shrink {
   flex-shrink: 1;
+}
+.flex-shrink-0 {
+  flex-shrink: 0;
 }
 .shrink-0 {
   flex-shrink: 0;
@@ -1365,9 +1386,6 @@ video {
 .grid-cols-4 {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
-.grid-cols-5 {
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-}
 .grid-cols-\[140px_1fr\] {
   grid-template-columns: 140px 1fr;
 }
@@ -1395,6 +1413,9 @@ video {
 .items-center {
   align-items: center;
 }
+.items-stretch {
+  align-items: stretch;
+}
 .justify-end {
   justify-content: flex-end;
 }
@@ -1403,6 +1424,9 @@ video {
 }
 .justify-between {
   justify-content: space-between;
+}
+.gap-0 {
+  gap: 0px;
 }
 .gap-1 {
   gap: 0.25rem;
@@ -1457,6 +1481,9 @@ video {
 .overflow-hidden {
   overflow: hidden;
 }
+.overflow-x-auto {
+  overflow-x: auto;
+}
 .overflow-y-auto {
   overflow-y: auto;
 }
@@ -1470,6 +1497,21 @@ video {
 }
 .rounded {
   border-radius: 0.25rem;
+}
+.rounded-\[10px\] {
+  border-radius: 10px;
+}
+.rounded-\[4px\] {
+  border-radius: 4px;
+}
+.rounded-\[6px\] {
+  border-radius: 6px;
+}
+.rounded-\[7px\] {
+  border-radius: 7px;
+}
+.rounded-\[9px\] {
+  border-radius: 9px;
 }
 .rounded-full {
   border-radius: 9999px;
@@ -1511,9 +1553,25 @@ video {
 .border-dashed {
   border-style: dashed;
 }
+.border-\[\#0E3A2A\] {
+  --tw-border-opacity: 1;
+  border-color: rgb(14 58 42 / var(--tw-border-opacity));
+}
+.border-\[\#121317\] {
+  --tw-border-opacity: 1;
+  border-color: rgb(18 19 23 / var(--tw-border-opacity));
+}
 .border-\[\#1A1A1A\] {
   --tw-border-opacity: 1;
   border-color: rgb(26 26 26 / var(--tw-border-opacity));
+}
+.border-\[\#1B1E22\] {
+  --tw-border-opacity: 1;
+  border-color: rgb(27 30 34 / var(--tw-border-opacity));
+}
+.border-\[\#1B6B4D\] {
+  --tw-border-opacity: 1;
+  border-color: rgb(27 107 77 / var(--tw-border-opacity));
 }
 .border-\[\#1D1D1D\] {
   --tw-border-opacity: 1;
@@ -1555,6 +1613,10 @@ video {
   --tw-border-opacity: 1;
   border-color: rgb(35 35 35 / var(--tw-border-opacity));
 }
+.border-\[\#23262C\] {
+  --tw-border-opacity: 1;
+  border-color: rgb(35 38 44 / var(--tw-border-opacity));
+}
 .border-\[\#242424\] {
   --tw-border-opacity: 1;
   border-color: rgb(36 36 36 / var(--tw-border-opacity));
@@ -1563,9 +1625,21 @@ video {
   --tw-border-opacity: 1;
   border-color: rgb(37 37 37 / var(--tw-border-opacity));
 }
+.border-\[\#252932\] {
+  --tw-border-opacity: 1;
+  border-color: rgb(37 41 50 / var(--tw-border-opacity));
+}
+.border-\[\#252A35\] {
+  --tw-border-opacity: 1;
+  border-color: rgb(37 42 53 / var(--tw-border-opacity));
+}
 .border-\[\#262626\] {
   --tw-border-opacity: 1;
   border-color: rgb(38 38 38 / var(--tw-border-opacity));
+}
+.border-\[\#26282C\] {
+  --tw-border-opacity: 1;
+  border-color: rgb(38 40 44 / var(--tw-border-opacity));
 }
 .border-\[\#272727\] {
   --tw-border-opacity: 1;
@@ -1675,6 +1749,14 @@ video {
   --tw-border-opacity: 1;
   border-color: rgb(124 74 21 / var(--tw-border-opacity));
 }
+.border-\[\#7E1E25\] {
+  --tw-border-opacity: 1;
+  border-color: rgb(126 30 37 / var(--tw-border-opacity));
+}
+.border-\[\#8D2D38\] {
+  --tw-border-opacity: 1;
+  border-color: rgb(141 45 56 / var(--tw-border-opacity));
+}
 .border-\[\#A97B00\] {
   --tw-border-opacity: 1;
   border-color: rgb(169 123 0 / var(--tw-border-opacity));
@@ -1682,6 +1764,10 @@ video {
 .border-\[\#B45309\] {
   --tw-border-opacity: 1;
   border-color: rgb(180 83 9 / var(--tw-border-opacity));
+}
+.border-\[\#E2B515\] {
+  --tw-border-opacity: 1;
+  border-color: rgb(226 181 21 / var(--tw-border-opacity));
 }
 .border-\[\#EF4444\] {
   --tw-border-opacity: 1;
@@ -1713,9 +1799,32 @@ video {
 .border-t-transparent {
   border-top-color: transparent;
 }
-.bg-\[\#08140C\] {
+.bg-\[\#050607\] {
   --tw-bg-opacity: 1;
-  background-color: rgb(8 20 12 / var(--tw-bg-opacity));
+  background-color: rgb(5 6 7 / var(--tw-bg-opacity));
+}
+.bg-\[\#06070A\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(6 7 10 / var(--tw-bg-opacity));
+}
+.bg-\[\#061510\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(6 21 16 / var(--tw-bg-opacity));
+}
+.bg-\[\#07080A\]\/95 {
+  background-color: rgb(7 8 10 / 0.95);
+}
+.bg-\[\#08090B\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(8 9 11 / var(--tw-bg-opacity));
+}
+.bg-\[\#083A2B\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(8 58 43 / var(--tw-bg-opacity));
+}
+.bg-\[\#090B0E\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(9 11 14 / var(--tw-bg-opacity));
 }
 .bg-\[\#0A0A0A\] {
   --tw-bg-opacity: 1;
@@ -1733,6 +1842,10 @@ video {
   --tw-bg-opacity: 1;
   background-color: rgb(13 13 13 / var(--tw-bg-opacity));
 }
+.bg-\[\#0D1016\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(13 16 22 / var(--tw-bg-opacity));
+}
 .bg-\[\#0D190F\] {
   --tw-bg-opacity: 1;
   background-color: rgb(13 25 15 / var(--tw-bg-opacity));
@@ -1741,6 +1854,14 @@ video {
   --tw-bg-opacity: 1;
   background-color: rgb(14 14 14 / var(--tw-bg-opacity));
 }
+.bg-\[\#0E1013\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(14 16 19 / var(--tw-bg-opacity));
+}
+.bg-\[\#0E1116\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(14 17 22 / var(--tw-bg-opacity));
+}
 .bg-\[\#0E1C12\] {
   --tw-bg-opacity: 1;
   background-color: rgb(14 28 18 / var(--tw-bg-opacity));
@@ -1748,6 +1869,10 @@ video {
 .bg-\[\#0F0F0F\] {
   --tw-bg-opacity: 1;
   background-color: rgb(15 15 15 / var(--tw-bg-opacity));
+}
+.bg-\[\#0F1012\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(15 16 18 / var(--tw-bg-opacity));
 }
 .bg-\[\#0F172A\] {
   --tw-bg-opacity: 1;
@@ -1773,9 +1898,6 @@ video {
   --tw-bg-opacity: 1;
   background-color: rgb(17 17 17 / var(--tw-bg-opacity));
 }
-.bg-\[\#111111\]\/95 {
-  background-color: rgb(17 17 17 / 0.95);
-}
 .bg-\[\#121212\] {
   --tw-bg-opacity: 1;
   background-color: rgb(18 18 18 / var(--tw-bg-opacity));
@@ -1796,6 +1918,10 @@ video {
   --tw-bg-opacity: 1;
   background-color: rgb(22 17 10 / var(--tw-bg-opacity));
 }
+.bg-\[\#161209\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(22 18 9 / var(--tw-bg-opacity));
+}
 .bg-\[\#161616\] {
   --tw-bg-opacity: 1;
   background-color: rgb(22 22 22 / var(--tw-bg-opacity));
@@ -1804,13 +1930,13 @@ video {
   --tw-bg-opacity: 1;
   background-color: rgb(22 55 31 / var(--tw-bg-opacity));
 }
+.bg-\[\#17090D\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(23 9 13 / var(--tw-bg-opacity));
+}
 .bg-\[\#171717\] {
   --tw-bg-opacity: 1;
   background-color: rgb(23 23 23 / var(--tw-bg-opacity));
-}
-.bg-\[\#1A0505\] {
-  --tw-bg-opacity: 1;
-  background-color: rgb(26 5 5 / var(--tw-bg-opacity));
 }
 .bg-\[\#1A1A1A\] {
   --tw-bg-opacity: 1;
@@ -1923,6 +2049,10 @@ video {
   --tw-bg-opacity: 1;
   background-color: rgb(75 85 99 / var(--tw-bg-opacity));
 }
+.bg-\[\#5B1D24\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(91 29 36 / var(--tw-bg-opacity));
+}
 .bg-\[\#60A5FA\] {
   --tw-bg-opacity: 1;
   background-color: rgb(96 165 250 / var(--tw-bg-opacity));
@@ -1943,6 +2073,10 @@ video {
   --tw-bg-opacity: 1;
   background-color: rgb(249 115 22 / var(--tw-bg-opacity));
 }
+.bg-\[\#F9C21A\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(249 194 26 / var(--tw-bg-opacity));
+}
 .bg-\[\#FACC15\] {
   --tw-bg-opacity: 1;
   background-color: rgb(250 204 21 / var(--tw-bg-opacity));
@@ -1950,6 +2084,9 @@ video {
 .bg-\[\#FFC107\] {
   --tw-bg-opacity: 1;
   background-color: rgb(255 193 7 / var(--tw-bg-opacity));
+}
+.bg-bg {
+  background-color: var(--bg);
 }
 .bg-black {
   --tw-bg-opacity: 1;
@@ -2027,6 +2164,12 @@ video {
 .bg-\[size\:24px_24px\] {
   background-size: 24px 24px;
 }
+.fill-\[\#07080A\] {
+  fill: #07080A;
+}
+.fill-\[\#0D0E10\] {
+  fill: #0D0E10;
+}
 .fill-\[\#101010\] {
   fill: #101010;
 }
@@ -2042,11 +2185,23 @@ video {
 .fill-\[\#F97316\] {
   fill: #F97316;
 }
+.fill-none {
+  fill: none;
+}
+.stroke-\[\#1E2024\] {
+  stroke: #1E2024;
+}
 .stroke-\[\#272727\] {
   stroke: #272727;
 }
+.stroke-\[\#2A2E34\] {
+  stroke: #2A2E34;
+}
 .stroke-\[\#3A3A3A\] {
   stroke: #3A3A3A;
+}
+.stroke-\[\#FCA5A5\] {
+  stroke: #FCA5A5;
 }
 .p-1 {
   padding: 0.25rem;
@@ -2109,8 +2264,11 @@ video {
 .pb-2 {
   padding-bottom: 0.5rem;
 }
-.pb-20 {
-  padding-bottom: 5rem;
+.pb-3 {
+  padding-bottom: 0.75rem;
+}
+.pb-6 {
+  padding-bottom: 1.5rem;
 }
 .pl-7 {
   padding-left: 1.75rem;
@@ -2130,6 +2288,9 @@ video {
 .pt-1 {
   padding-top: 0.25rem;
 }
+.pt-2 {
+  padding-top: 0.5rem;
+}
 .pt-4 {
   padding-top: 1rem;
 }
@@ -2142,8 +2303,14 @@ video {
 .text-right {
   text-align: right;
 }
+.font-cond {
+  font-family: var(--font-barlow-condensed), sans-serif;
+}
 .font-mono {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-family: var(--font-jetbrains), var(--font-space-mono), monospace;
+}
+.font-sans {
+  font-family: var(--font-inter), var(--font-barlow), sans-serif;
 }
 .text-2xl {
   font-size: 1.5rem;
@@ -2162,8 +2329,17 @@ video {
 .text-\[12px\] {
   font-size: 12px;
 }
+.text-\[24px\] {
+  font-size: 24px;
+}
+.text-\[26px\] {
+  font-size: 26px;
+}
 .text-\[28px\] {
   font-size: 28px;
+}
+.text-\[34px\] {
+  font-size: 34px;
 }
 .text-base {
   font-size: 1rem;
@@ -2229,6 +2405,10 @@ video {
   --tw-text-opacity: 1;
   color: rgb(34 197 94 / var(--tw-text-opacity));
 }
+.text-\[\#434955\] {
+  --tw-text-opacity: 1;
+  color: rgb(67 73 85 / var(--tw-text-opacity));
+}
 .text-\[\#4ADE80\] {
   --tw-text-opacity: 1;
   color: rgb(74 222 128 / var(--tw-text-opacity));
@@ -2236,6 +2416,10 @@ video {
 .text-\[\#4B5563\] {
   --tw-text-opacity: 1;
   color: rgb(75 85 99 / var(--tw-text-opacity));
+}
+.text-\[\#4E535F\] {
+  --tw-text-opacity: 1;
+  color: rgb(78 83 95 / var(--tw-text-opacity));
 }
 .text-\[\#60A5FA\] {
   --tw-text-opacity: 1;
@@ -2281,13 +2465,25 @@ video {
   --tw-text-opacity: 1;
   color: rgb(245 158 11 / var(--tw-text-opacity));
 }
+.text-\[\#F5C21A\] {
+  --tw-text-opacity: 1;
+  color: rgb(245 194 26 / var(--tw-text-opacity));
+}
 .text-\[\#F5F5F5\] {
   --tw-text-opacity: 1;
   color: rgb(245 245 245 / var(--tw-text-opacity));
 }
+.text-\[\#F6C32D\] {
+  --tw-text-opacity: 1;
+  color: rgb(246 195 45 / var(--tw-text-opacity));
+}
 .text-\[\#F87171\] {
   --tw-text-opacity: 1;
   color: rgb(248 113 113 / var(--tw-text-opacity));
+}
+.text-\[\#F8C51D\] {
+  --tw-text-opacity: 1;
+  color: rgb(248 197 29 / var(--tw-text-opacity));
 }
 .text-\[\#F97316\] {
   --tw-text-opacity: 1;
@@ -2325,9 +2521,16 @@ video {
   --tw-text-opacity: 1;
   color: rgb(0 0 0 / var(--tw-text-opacity));
 }
+.text-text {
+  color: var(--text);
+}
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+.antialiased {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 .accent-\[\#22C55E\] {
   accent-color: #22C55E;
@@ -2365,9 +2568,19 @@ video {
   --tw-shadow-colored: 0 16px 40px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
+.shadow-\[inset_0_0_0_1px_rgba\(242\2c 191\2c 20\2c 0\.24\)\] {
+  --tw-shadow: inset 0 0 0 1px rgba(242,191,20,0.24);
+  --tw-shadow-colored: inset 0 0 0 1px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
 .shadow-\[inset_0_0_20px_rgba\(34\2c 197\2c 94\2c 0\.08\)\] {
   --tw-shadow: inset 0 0 20px rgba(34,197,94,0.08);
   --tw-shadow-colored: inset 0 0 20px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-\[inset_3px_0_0_\#F5C21A\] {
+  --tw-shadow: inset 3px 0 0 #F5C21A;
+  --tw-shadow-colored: inset 3px 0 0 var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 .outline-none {
@@ -2447,26 +2660,27 @@ video {
   perspective: 800px;
 }
 
+/* Updated design system for new dashboard UI */
 :root {
-  --bg: #0a0b0d;
-  --bg2: #111318;
-  --bg3: #181c22;
-  --card: #13161c;
-  --card2: #1a1f28;
-  --border: #252a35;
-  --border2: #2e3545;
-  --yellow: #f5c800;
-  --yellow2: #ffd832;
-  --yellow-dim: rgba(245, 200, 0, 0.12);
-  --red: #e53935;
-  --red-dim: rgba(229, 57, 53, 0.15);
-  --green: #00c853;
-  --green-dim: rgba(0, 200, 83, 0.12);
-  --orange: #ff6d00;
-  --blue: #2979ff;
-  --text: #e8eaf0;
-  --text2: #8f96a8;
-  --text3: #5a6275;
+  --bg: #0A0A0A;
+  --bg2: #111111;
+  --bg3: #171717;
+  --card: #181C22;
+  --card2: #23272F;
+  --border: #1F1F1F;
+  --border2: #252A35;
+  --yellow: #FFC107;
+  --yellow2: #FFD832;
+  --yellow-dim: rgba(255, 193, 7, 0.12);
+  --red: #EF4444;
+  --red-dim: rgba(239, 68, 68, 0.15);
+  --green: #22C55E;
+  --green-dim: rgba(34, 197, 94, 0.12);
+  --orange: #F97316;
+  --blue: #2979FF;
+  --text: #F5F5F5;
+  --text2: #9CA3AF;
+  --text3: #5A6275;
   --mono: var(--font-jetbrains), var(--font-space-mono), monospace;
   --sans: var(--font-inter), var(--font-barlow), sans-serif;
   --cond: var(--font-barlow-condensed), sans-serif;
@@ -2479,51 +2693,32 @@ video {
 }
 
 html {
-  font-size: 14px;
+  font-size: 15px;
+  background: var(--bg);
 }
 
 body {
-  background: radial-gradient(circle at 12% -10%, rgba(245, 200, 0, 0.1), transparent 36%), radial-gradient(circle at 88% 120%, rgba(41, 121, 255, 0.08), transparent 32%), var(--bg);
+  background: radial-gradient(circle at 12% -10%, rgba(255, 193, 7, 0.08), transparent 36%), radial-gradient(circle at 88% 120%, rgba(41, 121, 255, 0.06), transparent 32%), var(--bg);
   color: var(--text);
   font-family: var(--sans);
   min-height: 100vh;
   overflow-x: hidden;
+  letter-spacing: 0.01em;
 }
 
 ::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
+  width: 6px;
+  height: 6px;
 }
-
 ::-webkit-scrollbar-track {
-  background: var(--bg);
+  background: var(--bg2);
 }
-
 ::-webkit-scrollbar-thumb {
   background: var(--border2);
-  border-radius: 2px;
+  border-radius: 3px;
 }
 
-.app {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-}
 
-.topbar {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 0 20px;
-  height: 52px;
-  background: color-mix(in oklab, var(--bg2) 90%, #000 10%);
-  border-bottom: 1px solid var(--border);
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  flex-shrink: 0;
-  backdrop-filter: blur(8px);
-}
 
 .logo-mark {
   width: 32px;
@@ -4248,6 +4443,11 @@ canvas {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
+.hover\:border-\[\#1B6B4D\]:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(27 107 77 / var(--tw-border-opacity));
+}
+
 .hover\:border-\[\#2F2F2F\]:hover {
   --tw-border-opacity: 1;
   border-color: rgb(47 47 47 / var(--tw-border-opacity));
@@ -4263,9 +4463,9 @@ canvas {
   border-color: rgb(74 74 74 / var(--tw-border-opacity));
 }
 
-.hover\:border-\[\#4ADE80\]:hover {
+.hover\:border-\[\#7F1D1D\]:hover {
   --tw-border-opacity: 1;
-  border-color: rgb(74 222 128 / var(--tw-border-opacity));
+  border-color: rgb(127 29 29 / var(--tw-border-opacity));
 }
 
 .hover\:border-\[\#9CA3AF\]:hover {
@@ -4273,9 +4473,9 @@ canvas {
   border-color: rgb(156 163 175 / var(--tw-border-opacity));
 }
 
-.hover\:border-\[\#F87171\]:hover {
+.hover\:border-\[\#B73745\]:hover {
   --tw-border-opacity: 1;
-  border-color: rgb(248 113 113 / var(--tw-border-opacity));
+  border-color: rgb(183 55 69 / var(--tw-border-opacity));
 }
 
 .hover\:border-\[\#FACC15\]:hover {
@@ -4286,6 +4486,11 @@ canvas {
 .hover\:border-\[\#FB923C\]:hover {
   --tw-border-opacity: 1;
   border-color: rgb(251 146 60 / var(--tw-border-opacity));
+}
+
+.hover\:bg-\[\#11141A\]:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(17 20 26 / var(--tw-bg-opacity));
 }
 
 .hover\:bg-\[\#151515\]:hover {
@@ -4338,9 +4543,19 @@ canvas {
   color: rgb(147 197 253 / var(--tw-text-opacity));
 }
 
+.hover\:text-\[\#D1D5DB\]:hover {
+  --tw-text-opacity: 1;
+  color: rgb(209 213 219 / var(--tw-text-opacity));
+}
+
 .hover\:text-\[\#F5F5F5\]:hover {
   --tw-text-opacity: 1;
   color: rgb(245 245 245 / var(--tw-text-opacity));
+}
+
+.hover\:text-\[\#F87171\]:hover {
+  --tw-text-opacity: 1;
+  color: rgb(248 113 113 / var(--tw-text-opacity));
 }
 
 .focus\:bg-\[\#1A1A1A\]:focus {
@@ -4377,10 +4592,6 @@ canvas {
   opacity: 0.5;
 }
 
-.group:hover .group-hover\:w-\[220px\] {
-  width: 220px;
-}
-
 .group:hover .group-hover\:opacity-100 {
   opacity: 1;
 }
@@ -4412,8 +4623,8 @@ canvas {
     grid-column: span 2 / span 2;
   }
 
-  .md\:ml-12 {
-    margin-left: 3rem;
+  .md\:ml-\[56px\] {
+    margin-left: 56px;
   }
 
   .md\:block {
@@ -4448,6 +4659,10 @@ canvas {
     padding: 1rem;
   }
 
+  .md\:p-5 {
+    padding: 1.25rem;
+  }
+
   .md\:p-6 {
     padding: 1.5rem;
   }
@@ -4461,25 +4676,16 @@ canvas {
     padding-right: 1.5rem;
   }
 
-  .md\:pb-6 {
-    padding-bottom: 1.5rem;
-  }
-
   .md\:text-base {
     font-size: 1rem;
     line-height: 1.5rem;
-  }
-
-  .md\:text-sm {
-    font-size: 0.875rem;
-    line-height: 1.25rem;
   }
 }
 
 @media (min-width: 1024px) {
 
-  .lg\:flex {
-    display: flex;
+  .lg\:inline {
+    display: inline;
   }
 
   .lg\:w-auto {
@@ -4535,10 +4741,6 @@ canvas {
 
   .xl\:col-span-3 {
     grid-column: span 3 / span 3;
-  }
-
-  .xl\:inline {
-    display: inline;
   }
 
   .xl\:grid-cols-2 {

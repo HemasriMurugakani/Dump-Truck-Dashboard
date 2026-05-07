@@ -45,8 +45,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${inter.variable} ${jetbrainsMono.variable} ${barlow.variable} ${barlowCondensed.variable} ${spaceMono.variable}`}>
+    <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable} ${barlow.variable} ${barlowCondensed.variable} ${spaceMono.variable}`}>
+      <body className="min-h-screen bg-bg text-text font-sans antialiased">
         <AppSessionProvider>
           {children}
           <Toaster richColors closeButton position="top-right" />

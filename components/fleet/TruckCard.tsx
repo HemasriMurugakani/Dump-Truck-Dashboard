@@ -18,8 +18,8 @@ function cbClass(value: number) {
 function statusStyles(status: TruckRecord["status"]) {
   if (status === "CARRY_BACK_DETECTED") {
     return {
-      card: "border-[#EF4444] bg-[#1A0505] hover:border-[#F87171]",
-      badge: "bg-[#EF4444] text-white smartbed-badge-pulse",
+      card: "border-[#7E1E25] bg-[#17090D] hover:border-[#B73745]",
+      badge: "bg-[#5B1D24] border border-[#8D2D38] text-[#FCA5A5] smartbed-badge-pulse",
       text: "CARRY-BACK DETECTED",
     };
   }
@@ -38,8 +38,8 @@ function statusStyles(status: TruckRecord["status"]) {
     };
   }
   return {
-    card: "border-[#22C55E] bg-[#08140C] hover:border-[#4ADE80]",
-    badge: "bg-[#22C55E] text-black",
+    card: "border-[#0E3A2A] bg-[#061510] hover:border-[#1B6B4D]",
+    badge: "bg-[#083A2B] border border-[#1B6B4D] text-[#86EFAC]",
     text: "OPERATIONAL",
   };
 }
@@ -86,28 +86,28 @@ export function TruckCard({
   return (
     <Link
       href={`/dashboard/truck/${truck.id}`}
-      className={`block rounded-xl border p-4 transition-all duration-200 hover:translate-y-[-2px] ${style.card} ${emphasize ? "smartbed-card-flash" : ""} ${expanded ? "md:p-6" : ""}`}
+      className={`block rounded-md border p-4 transition-all duration-200 hover:translate-y-[-2px] ${style.card} ${emphasize ? "smartbed-card-flash" : ""} ${expanded ? "md:p-5" : ""}`}
     >
       <div className="flex items-start justify-between gap-2">
         <div>
-          <p className="text-xl font-bold font-mono text-[#FFC107]">CAT {truck.id}</p>
-          <p className="text-xs text-[#9CA3AF] mt-1">{modelLabel}</p>
+          <p className="text-[34px] leading-none font-bold font-cond text-[#F6C32D] tracking-wide">CAT {truck.id}</p>
+          <p className="text-sm text-[#9CA3AF] mt-1">{modelLabel}</p>
         </div>
-        <span className={`rounded-full px-2.5 py-1 text-[10px] font-semibold tracking-wide ${style.badge}`}>{style.text}</span>
+        <span className={`rounded-sm px-2.5 py-1 text-[10px] font-semibold tracking-wide ${style.badge}`}>{style.text}</span>
       </div>
 
-      <div className="mt-4 grid grid-cols-3 gap-3 text-xs">
+      <div className="mt-5 grid grid-cols-3 gap-3 text-xs">
         <div>
-          <p className="text-[#6B7280] uppercase tracking-wide">Operator</p>
-          <p className="text-[#E5E7EB] mt-1 truncate">{truck.operator}</p>
+          <p className="text-[#6B7280] uppercase tracking-wide text-[10px]">Operator</p>
+          <p className="text-[#E5E7EB] mt-1 truncate text-[24px] leading-none font-cond">{truck.operator}</p>
         </div>
         <div>
-          <p className="text-[#6B7280] uppercase tracking-wide">Cycles Today</p>
-          <p className="text-[#E5E7EB] mt-1 font-semibold tabular-nums">{truck.cyclesShift}</p>
+          <p className="text-[#6B7280] uppercase tracking-wide text-[10px]">Cycles Today</p>
+          <p className="text-[#E5E7EB] mt-1 font-semibold tabular-nums text-[26px] leading-none font-cond">{truck.cyclesShift}</p>
         </div>
         <div>
-          <p className="text-[#6B7280] uppercase tracking-wide">Carry-Back %</p>
-          <p className={`mt-1 font-semibold tabular-nums ${cbClass(truck.carryBackPct)}`}>{truck.carryBackPct.toFixed(1)}%</p>
+          <p className="text-[#6B7280] uppercase tracking-wide text-[10px]">Carry-Back</p>
+          <p className={`mt-1 font-semibold tabular-nums text-[26px] leading-none font-cond ${cbClass(truck.carryBackPct)}`}>{truck.carryBackPct.toFixed(1)}%</p>
         </div>
       </div>
 

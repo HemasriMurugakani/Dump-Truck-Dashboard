@@ -24,10 +24,16 @@ function zoneClass(status: TruckRecord["bedZones"][ZoneKey]["status"]) {
 }
 
 export function MiniBeadViz({ bedZones }: { bedZones: TruckRecord["bedZones"] }) {
+  const alertCount = Object.values(bedZones).filter((zone) => zone.status !== "clear").length;
   return (
-    <div className="w-full max-w-[280px] h-[120px] rounded-md border border-[#2A2A2A] bg-[#0E0E0E] p-2">
+    <div className="w-full max-w-[320px] h-[126px] rounded-sm border border-[#26282C] bg-[#06070A] p-2">
+      <p className="mb-1 text-[10px] tracking-wide text-[#6B7280] uppercase">Bed Status</p>
       <svg viewBox="0 0 280 120" className="w-full h-full" role="img" aria-label="Truck bed zone map">
-        <polygon points="42,20 220,20 244,98 30,98" className="fill-[#101010] stroke-[#3A3A3A]" strokeWidth="1.2" />
+        <rect x="12" y="18" width="256" height="84" rx="4" className="fill-[#07080A] stroke-[#1E2024]" strokeWidth="1.2" />
+        <line x1="20" y1="38" x2="260" y2="38" stroke="#16191F" strokeWidth="1" />
+        <line x1="20" y1="58" x2="260" y2="58" stroke="#16191F" strokeWidth="1" />
+        <line x1="20" y1="78" x2="260" y2="78" stroke="#16191F" strokeWidth="1" />
+        <polygon points="42,22 220,22 244,96 30,96" className="fill-[#0D0E10] stroke-[#2A2E34]" strokeWidth="1.2" />
         {(Object.keys(zonePolygons) as ZoneKey[]).map((zone) => (
           <g key={zone}>
             <polygon points={zonePolygons[zone]} className={`${zoneClass(bedZones[zone].status)} stroke-[#272727]`} strokeWidth="1" />
@@ -41,6 +47,12 @@ export function MiniBeadViz({ bedZones }: { bedZones: TruckRecord["bedZones"] })
             </text>
           </g>
         ))}
+        {alertCount > 0 ? (
+          <g>
+            <polygon points="110,48 168,48 154,72 124,72" className="fill-[#EF4444] fill-opacity-80 smartbed-critical-breathe" />
+            <polygon points="108,46 170,46 156,74 122,74" className="fill-none stroke-[#FCA5A5] stroke-opacity-70" />
+          </g>
+        ) : null}
       </svg>
     </div>
   );

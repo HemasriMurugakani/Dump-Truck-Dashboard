@@ -1,4 +1,4 @@
-// File: /Users/mk/Desktop/web cat/app/api/auth/[...nextauth]/route.ts
+// File: F:\Caterpillar\Truck Dashboard\Dump-Truck-Dashboard\app\api\auth\[...nextauth]\route.ts
 import * as entry from '../../../../../../app/api/auth/[...nextauth]/route.js'
 import type { NextRequest } from 'next/server.js'
 

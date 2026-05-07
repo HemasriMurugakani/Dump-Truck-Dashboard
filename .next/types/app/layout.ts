@@ -1,4 +1,4 @@
-// File: /Users/mk/Desktop/web cat/app/layout.tsx
+// File: F:\Caterpillar\Truck Dashboard\Dump-Truck-Dashboard\app\layout.tsx
 import * as entry from '../../../app/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
